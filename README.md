@@ -7,6 +7,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 ## Available Skills
 
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
+- **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
 
 ---
 
@@ -89,3 +90,13 @@ npx skills use josudoey/skills@gen-commit-message
   - Format: `<type>(<scope>): <subject>`
   - English only, imperative mood, lowercase, no ending period, ≤ 100 characters.
   - Read-only analysis: only inspects staged changes without mutating git state or committing.
+
+### `progressive-context-loader`
+
+- **Description**: Guides coding agents through a structured, 5-level retrieval pyramid (`WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT`) to build accurate context with minimal token usage.
+- **Key Features**:
+  - **Context Pyramid**: Level 1 (WHY: Intent) ➔ Level 2 (WHAT: Domain Rules) ➔ Level 3 (HOW: Contracts & Code as Truth) ➔ Level 4 (CONVENTION: Targeted Engineering Guardrails) ➔ Level 5 (IMPLEMENT: Slices & Tests).
+  - **Convention Guardrails**: Automatically routes to specific naming, framework, and error handling conventions based on the change layer.
+  - **Token Discipline**: Keeps overall context retrieval tightly budgeted (< 6,000 ~ 8,000 tokens) using slice reading and interface-first discovery.
+  - **Context Summary Card**: Outputs a concise summary card before implementation begins.
+
