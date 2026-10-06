@@ -7,6 +7,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 ## Available Skills
 
 - **[`adopt-blueprint-workflow`](./skills/adopt-blueprint-workflow)**: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow with self-contained `docs/` and lightweight `AGENTS.md` pointers.
+- **[`audit-workflow-fitness`](./skills/audit-workflow-fitness)**: Audit and evaluate project development workflows, markdown governance, and spec fitness with a token-guarded diagnostic engine.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
 
@@ -92,6 +93,15 @@ npx skills use josudoey/skills@gen-commit-message
   - **Lightweight Pointer Pattern**: Maintains an ultra-lean root `AGENTS.md` (< 45 lines) directing AI agents to load workflow details on-demand, preventing context window bloat.
   - **Spec Immutability & Settle Gatekeeper**: Enforces append-only feature revision and structured knowledge settlement before ephemeral WIP specs are deleted.
   - **Dual-Mode Greenfield / Brownfield**: Safely adopts existing codebases using bounded marker blocks (`<!-- blueprint-workflow:start -->`), preserving 100% of pre-existing commands and instructions.
+
+### `audit-workflow-fitness`
+
+- **Description**: Evaluates and inspects project development workflows, markdown governance, and specification fitness using an ESLint-style diagnostic engine with strict Quality Gates (`PASSED` vs `BLOCKED`).
+- **Key Features**:
+  - **4-Dimensional Rule Engine**: Covers `consistency` (no manual status tags, valid relative links), `friction` (max token overhead, no bloated schema tables), `truth` (no duplicate API dictionaries, code as truth), and `traceability` (valid Code Maps and blueprint mappings).
+  - **Binary Quality Gate**: Eliminates compensatory composite score fallacies; any `error` immediately blocks the gate, while `warn` flags advisories.
+  - **Token-Guarded Inspection Protocol**: Employs metadata-first inspection with byte-to-token ratio estimation and UNIX silence, keeping diagnostic context overhead $< 2,000$ tokens.
+  - **Pure-Skill Portability**: Built as a pure cognitive Markdown engine (`SKILL.md`) with zero scripts and zero runtime dependencies.
 
 ### `gen-commit-message`
 

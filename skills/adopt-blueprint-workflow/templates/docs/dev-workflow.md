@@ -75,11 +75,7 @@ flowchart LR
 
 ### Stage 2: Implementation & Verification
 - **Rules**:
-  - Code comments reference permanent Blueprints or Living Specs (never ephemeral progress paths):
-    ```
-    // Ref: [Blueprint 1.1] §4 (anchors user intent)
-    // Ref: [Reference] order.md §2 (anchors domain invariant)
-    ```
+  - **Unidirectional Navigation**: Implementation code and skills remain clean, pure, and decoupled from internal documentation paths. Traceability is maintained unilaterally in `docs/reference/[domain].md` (Code Navigation Map). Code comments SHOULD NOT maintain reverse pointers (e.g. `// Ref: ...`) back to documentation, preventing redundant maintenance friction and cross-boundary coupling.
   - Implement accompanying automated tests (unit, contract, and integration tests).
   - Run project-level linters and test suites to verify zero regressions.
 
