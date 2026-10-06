@@ -19,3 +19,8 @@
   - `npx skills add <repo> --skill <name>`
   - `npx skills add <repo> -g`
   - `npx skills use <repo>@<name>`
+
+## Path Portability & Standards
+- **Strict Relative Paths**: All documentation links, skill manifests, script execution parameters, and configuration files must use repository-relative paths (`./` or `../`).
+- **Zero Absolute Paths**: Hardcoded local machine paths (e.g., `/Users/...` or `/home/...`) are strictly prohibited in all committed files.
+
