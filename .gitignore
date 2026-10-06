@@ -25,4 +25,7 @@ dist/
 __pycache__/
 *.py[cod]
 .venv/
+
 worktree
+.agents/skills
+skills-lock.json
