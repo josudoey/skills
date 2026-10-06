@@ -71,6 +71,7 @@ flowchart LR
   - Name files according to standard conventions without status badges.
   - Check upstream contracts before drafting downstream specs.
   - New revisions always increment the numerical prefix (Append-Only).
+  - **Stage 1 Gate (No Premature Implementation)**: The deliverable of Stage 1 is strictly the specification document in `docs/progress/`. Implementation directories, application code, and scripts MUST NOT be created until the specification is reviewed and approved by an engineer.
 
 ### Stage 2: Implementation & Verification
 - **Rules**:
