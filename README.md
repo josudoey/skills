@@ -6,6 +6,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 
 ## Available Skills
 
+- **[`adopt-blueprint-workflow`](./skills/adopt-blueprint-workflow)**: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow with self-contained `docs/` and lightweight `AGENTS.md` pointers.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
 
@@ -82,6 +83,15 @@ npx skills use josudoey/skills@gen-commit-message
 ---
 
 ## Skill Details
+
+### `adopt-blueprint-workflow`
+
+- **Description**: Bootstraps or upgrades any software repository (polyglot: Rust, Go, Python, TypeScript, Java, etc.) into an enterprise-grade Blueprint-Driven Development (BDD) engineering workflow.
+- **Key Features**:
+  - **Self-Contained `docs/` Layout**: Standardizes `docs/blueprint/` (frozen product intent), `docs/progress/` (active vertical slices), `docs/reference/` (living specifications & code maps), and `docs/dev-workflow.md` (the definitive lifecycle guide).
+  - **Lightweight Pointer Pattern**: Maintains an ultra-lean root `AGENTS.md` (< 45 lines) directing AI agents to load workflow details on-demand, preventing context window bloat.
+  - **Spec Immutability & Settle Gatekeeper**: Enforces append-only feature revision and structured knowledge settlement before ephemeral WIP specs are deleted.
+  - **Dual-Mode Greenfield / Brownfield**: Safely adopts existing codebases using bounded marker blocks (`<!-- blueprint-workflow:start -->`), preserving 100% of pre-existing commands and instructions.
 
 ### `gen-commit-message`
 
