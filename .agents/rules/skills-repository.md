@@ -29,3 +29,8 @@
 - **Strict Relative Paths**: All documentation links, skill manifests, script execution parameters, and configuration files must use repository-relative paths (`./` or `../`).
 - **Zero Absolute Paths**: Hardcoded local machine paths (e.g., `/Users/...` or `/home/...`) are strictly prohibited in all committed files.
 
+## Language Standard (English-Only Maintenance)
+- **Strict English File Maintenance**: All documentation, skill definitions (`SKILL.md`), reference materials, code comments, script outputs, and commit messages must be written and maintained exclusively in English.
+- **Multilingual Prompt Decoupling**: AI agents may converse with users in the user's preferred language, but any file created, edited, or committed to the repository must be authored in English without exception.
+- **ASCII / Kebab-Case Naming**: All filenames, directory paths, and identifiers must use standard English kebab-case naming.
+

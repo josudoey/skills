@@ -47,6 +47,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 ### 3.3 Quality Gate Invariant
 $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \sum \text{errors} = 0 \\ \mathbf{BLOCKED}, & \text{if } \sum \text{errors} > 0 \end{cases}$$
 
+### 3.4 Language Standard (English-Only Maintenance)
+- All governance artifacts (`AGENTS.md`, `.agents/rules/**`), lifecycle specifications (`docs/**`), and skill definitions (`skills/**`) must be maintained in English to ensure cross-ecosystem portability and zero cognitive friction for polyglot AI coding agents.
+
 ---
 
 ## 4. State Machines & Critical Flows

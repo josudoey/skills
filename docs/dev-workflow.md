@@ -24,6 +24,8 @@ To maximize engineering velocity and eliminate the maintenance overhead of manua
      - Implementation details (API payloads, schema fields, status codes) are verified directly against production schemas, typed contracts, and automated tests.
 4. **Project Resources**:
    - Production code, global conventions, configuration, and build toolchains constitute project resources.
+5. **Language Invariant (English-Only Maintenance)**:
+   - All documentation across `docs/blueprint/`, `docs/progress/`, and `docs/reference/` must be authored and maintained in English. This ensures universal accessibility across diverse development teams, international open-source distribution, and consistent token efficiency across multi-agent toolchains.
 
 ```mermaid
 flowchart TD

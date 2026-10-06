@@ -19,6 +19,9 @@ This directory houses **in-flight project specifications and vertical slices** c
   - Update the `Code Map`.
   - Pass the **Settle Gatekeeper (Three-Question Test)** before removing ephemeral specs from this directory.
 
+### 4. Language Standard (English Only)
+- All active specifications drafted in `docs/progress/` must be written in English.
+
 ## File Organization & Naming (Symmetric Pragmatic WBS)
 
 Subdirectories strictly mirror the parent Blueprint code (`[domain].[capability]`):
