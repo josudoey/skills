@@ -25,3 +25,4 @@ dist/
 __pycache__/
 *.py[cod]
 .venv/
+worktree
