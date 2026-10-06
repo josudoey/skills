@@ -5,6 +5,11 @@
 - `SKILL.md` must include valid YAML frontmatter with `name` and `description`.
 - Store auxiliary scripts under `skills/<skill-name>/scripts/` and ensure they have executable permissions (`chmod +x`).
 
+## Skill Design Principles (Pure-Skill First)
+- **Cognitive Workflow as Core**: Design skills with pure Markdown (`SKILL.md`) instructions, reasoning steps, and semantic criteria as the primary driver.
+- **Universal Portability (Zero-Runtime)**: Do not impose hard dependencies on specific language runtimes (Node.js, Python) unless strictly necessary. Skills must remain functional in bare environments and across varied project stacks.
+- **Auxiliary Scripts as Optional Fast-Paths**: Scripts stored under `skills/<skill-name>/scripts/` must be treated strictly as optional acceleration tools or CLI wrappers. `SKILL.md` must provide clear instructions so an Agent can reason through the task even if scripts are not run.
+
 ## Verification
 - Validate discovery locally before pushing using:
   - `npx skills add . -l`

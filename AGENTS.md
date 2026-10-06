@@ -10,4 +10,4 @@
 <!-- blueprint-workflow:end -->
 
 ## Project Specific Standards
-See [.agents/rules/skills-repository.md](.agents/rules/skills-repository.md) for skill directory structure, validation, and README guidelines.
+See [.agents/rules/skills-repository.md](.agents/rules/skills-repository.md) for skill directory structure, design principles (Pure-Skill First), validation, and README guidelines.
