@@ -10,7 +10,7 @@
 ## 2. On-Demand Governance Pointers
 
 - **When planning new features, refactoring, or handling tasks**:
-  You MUST read and follow [CONTRIBUTING.md](file://CONTRIBUTING.md) before writing implementation plans or code.
+  You MUST read and follow [CONTRIBUTING.md](CONTRIBUTING.md) before writing implementation plans or code.
 - **When organizing modules and dependencies**:
   Maintain strict unidirectional dependency flow (Shared/Domain Contracts ➔ Application Services ➔ Infrastructure & Presentation). Never introduce circular dependencies.
 - **When testing and verifying**:

@@ -21,7 +21,7 @@ flowchart LR
 - **Step 1: Discussion / Alignment**:
   - Open a GitHub issue or discussion to align on intent, problem scope, and target architecture before writing code.
 - **Step 2: Stage 1 Specification**:
-  - Draft an active vertical slice specification in `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-contributing-workflow.md`).
+  - Draft an active vertical slice specification in `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-example.md`).
 - **Step 3: Specification Review Gate**:
   - Implementation is strictly prohibited until the specification is reviewed and approved by repository maintainers.
 - **Step 4: Stage 2 Implementation & Automated Verification**:
@@ -40,7 +40,7 @@ To maximize engineering velocity and eliminate manual tracking friction, this re
    - **Retention Policy**: Serves as a frozen architectural design archive. **Never retroactively modify blueprints for tactical implementation trade-offs**. The blueprint permanently anchors original intent.
    - **Boundary Guardrail (Capability vs Tactical Leakage)**: Blueprints declare enduring business and system capabilities. **Tactical implementation details (concrete rule IDs, function signatures, CLI flags, token budgets, or test assertions) are strictly prohibited** in blueprints; these belong solely to active specifications (`docs/progress/[blueprint-code]/`).
 2. **Active Project Specifications ➔ `docs/progress/[blueprint-code]/` (WIP Deltas)**:
-   - **Purpose**: Active, scoped implementation plans detailing module interactions, data flows, and schema deltas for the specific blueprint capability (e.g., `docs/progress/1.1/1-feature-contributing-workflow.md`).
+   - **Purpose**: Active, scoped implementation plans detailing module interactions, data flows, and schema deltas for the specific blueprint capability (e.g., `docs/progress/1.1/1-feature-example.md`).
    - **Path-as-Status**: A document's presence inside `docs/progress/` signifies it is pending or actively in development. **Explicit status fields (e.g., Draft / Approved / In Progress) are strictly prohibited** in document headers.
    - **Spec Immutability & Append-Only Rule**:
      - Completed specifications with passing automated tests represent delivered historical facts. **Retroactive modification is strictly prohibited**.
@@ -97,7 +97,7 @@ flowchart LR
 
 ### Stage 1: Draft in Progress
 - **Scope**:
-  - **Vertical Slice (Recommended)**: For end-to-end features spanning shared schemas, backend logic, and frontend/CLI presentation, prefer a single slice file: `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-contributing-workflow.md`).
+  - **Vertical Slice (Recommended)**: For end-to-end features spanning shared schemas, backend logic, and frontend/CLI presentation, prefer a single slice file: `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-example.md`).
   - **Design-First**: Cross-cutting mechanisms (`mechanism`), shared schemas (`data-type`), or public contracts (`contract`).
   - **Code-Alongside**: Pure internal module handlers or UI components may be implemented directly against the Blueprint without blocking progress specs.
 - **Rules**:
