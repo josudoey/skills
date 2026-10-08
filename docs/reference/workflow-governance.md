@@ -58,6 +58,23 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \sum \text{e
 - Root `CONTRIBUTING.md` serves as the exclusive, canonical entrypoint for both human open-source contributors and autonomous AI agents without semantic divergence.
 - Workflow and development governance discovery relies strictly on standard repository root conventions (`CONTRIBUTING.md`, `AGENTS.md`), eliminating internal legacy forwarding stubs.
 
+### 3.6 The Three-Question Settle Gatekeeper Invariant
+Before any active specification in `docs/progress/` is retired, the settlement engine must evaluate:
+1. **Q1 (Architectural & State Flows)**: *Does this specification contain Mermaid sequence diagrams, state machine flows, or cross-system protocol transitions not immediately obvious from reading raw code?*
+   - If **YES**: Extract and synthesize into `docs/reference/[domain].md`.
+2. **Q2 (Fault-Tolerance & Boundary Rules)**: *Does this specification define critical fault-tolerance, offline degradation, retry compensation, quarantine recovery, or domain boundary invariants?*
+   - If **YES**: Extract and synthesize into `docs/reference/[domain].md`.
+3. **Q3 (Code-as-Truth & Self-Explanatory Logic)**: *Can a future engineer or AI agent understand this mechanism entirely from the production code and automated tests?*
+   - If **YES**: **Discard ephemeral details**. Explicitly exclude standard API route tables, CRUD DTO field lists, and mock payloads. Production code is the single source of truth.
+
+### 3.7 Interactive Human Confirmation Guardrail
+- The settlement engine must **never** execute silent disk mutations.
+- Proposed additions to `docs/reference/[domain].md` and files targeted for deletion must be presented in an interactive review card before applying changes.
+
+### 3.8 Automatic WIP Retirement & Directory Pruning
+- Retiring a specification removes the target file from `docs/progress/` to uphold the **Path-as-Status** standard.
+- If the parent slice directory (e.g., `docs/progress/1.1/`) is left empty after retirement, it must be automatically pruned to maintain repository cleanliness.
+
 ---
 
 
@@ -110,14 +127,37 @@ flowchart TD
   1. [Actionable remediation step]
   ```
 
+### 4.3 5-Phase Cognitive Settlement Engine (`settle-spec`)
+
+```mermaid
+flowchart TD
+    Trigger["Trigger: /settle-spec [path]"] --> P1["Phase 1: Pre-flight & Target Resolution"]
+    P1 --> P2["Phase 2: Three-Question Gatekeeper Evaluation"]
+    P2 --> P3["Phase 3: Living Reference & Code Map Synthesis"]
+    P3 --> P4["Phase 4: Interactive Review & User Sign-Off"]
+    P4 --> P5["Phase 5: Atomic Settle, Retirement & Commit Suggestion"]
+
+    P4 -->|"User Requests Edits / Abort"| P3
+```
+
+- **Phase 1 (Pre-flight & Target Resolution)**: Resolves target progress spec path or prompts user with an interactive list of active specs. Verifies production files and automated tests exist.
+- **Phase 2 (Three-Question Gatekeeper Evaluation)**: Analyzes spec against Q1 (state flows), Q2 (fault tolerance/invariants), and Q3 (self-explanatory logic), eliminating ephemeral DTO tables.
+- **Phase 3 (Living Reference & Code Map Synthesis)**: Synthesizes enduring invariants and diagrams into `docs/reference/[domain].md` and updates the Code Navigation Map.
+- **Phase 4 (Interactive Review & Human Sign-Off)**: Renders a structured review card detailing proposed reference updates and targeted file deletions for explicit user approval.
+- **Phase 5 (Atomic Settle, Retirement & Commit)**: Applies reference mutations, deletes the retired progress specification, prunes empty parent slice directories, and provides Conventional Commit guidance.
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
 
-- **Pure Skill Implementation**: [skills/audit-workflow-fitness/SKILL.md](../../skills/audit-workflow-fitness/SKILL.md)
+- **Pure Skill (Workflow Audit)**: [skills/audit-workflow-fitness/SKILL.md](../../skills/audit-workflow-fitness/SKILL.md)
+- **Pure Skill (Spec Settlement)**: [skills/settle-spec/SKILL.md](../../skills/settle-spec/SKILL.md)
+- **Settle Checklist Reference**: [skills/settle-spec/references/settle-checklist.md](../../skills/settle-spec/references/settle-checklist.md)
+- **Code Map Design Patterns**: [skills/settle-spec/references/code-map-patterns.md](../../skills/settle-spec/references/code-map-patterns.md)
 - **Repository Catalog**: [README.md](../../README.md)
 - **Repository Standards**: [.agents/rules/skills-repository.md](../../.agents/rules/skills-repository.md)
 - **Governance Directives**: [AGENTS.md](../../AGENTS.md)
 - **Lifecycle Engine Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
 - **Domain Master Blueprint**: [docs/blueprint/1.0_agentic-engineering-governance.md](../blueprint/1.0_agentic-engineering-governance.md)
 - **Upstream Product Blueprint**: [docs/blueprint/1.1_workflow-governance.md](../blueprint/1.1_workflow-governance.md)
+
