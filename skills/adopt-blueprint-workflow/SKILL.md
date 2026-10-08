@@ -78,29 +78,32 @@ Deploy or verify the definitive workflow specification at **`CONTRIBUTING.md`**:
 Configure the root `AGENTS.md` file using the **Two-Tier Pointer Pattern**:
 
 #### Case A: Greenfield (No Existing `AGENTS.md`)
-- Copy [templates/AGENTS.md](file://templates/AGENTS.md) directly to the root `AGENTS.md`.
+- Copy [templates/AGENTS.md](file://templates/AGENTS.md) directly to the project root `AGENTS.md`.
+- Ensure the deployed file contains the pre-configured `<!-- blueprint-workflow:start -->` and `<!-- blueprint-workflow:end -->` boundaries.
 
 #### Case B: Brownfield (Existing `AGENTS.md` Found)
-- **STRICT NON-DESTRUCTIVE RULE**: Never overwrite pre-existing instructions, build commands, or test guidelines.
+- **STRICT NON-DESTRUCTIVE RULE**: Never overwrite pre-existing instructions, build commands, test guidelines, or custom project sections outside the marker.
 - Search for the marker block in the existing `AGENTS.md`:
-  ```markdown
-  <!-- blueprint-workflow:start -->
-  ...
-  <!-- blueprint-workflow:end -->
-  ```
-- **If the marker exists**: Update only the content between the start and end markers with the latest pointer directives.
-- **If no marker exists**: Safely append the bounded block to the end of `AGENTS.md`:
+  `<!-- blueprint-workflow:start -->` ... `<!-- blueprint-workflow:end -->`
 
-```markdown
+1. **If the marker block does NOT exist**:
+   Safely append the bounded block to the end of `AGENTS.md`:
+   ```markdown
 
-<!-- blueprint-workflow:start -->
-## Development Workflow & Governance Directives
-- **Workflow & Lifecycle**: Follow the Blueprint-Driven Development workflow defined in [CONTRIBUTING.md](CONTRIBUTING.md). You MUST read it before planning new features or refactoring.
-- **Path-as-Status**: We follow the PARA documentation architecture. Documents in `docs/progress/` represent active WIP; never write manual status tags in file headers.
-- **Code as Truth**: Production schemas, interfaces, DTOs, and automated tests are the single source of truth. Documentation never duplicates field lists or API payload tables.
-- **Spec Immutability & Append-Only**: Delivered specifications are frozen historical records. Never modify completed specs retrospectively; add new revisions with incremented indices (`[NextIndex]-feature-...`).
-<!-- blueprint-workflow:end -->
-```
+   <!-- blueprint-workflow:start -->
+   ## Development Workflow & Governance Directives
+   - **Workflow & Lifecycle**: Follow the Blueprint-Driven Development workflow defined in [CONTRIBUTING.md](CONTRIBUTING.md). You MUST read it before planning new features or refactoring.
+   - **Stage Gate Isolation (No Premature Implementation)**: When tasked with Stage 1 (drafting/updating specs in `docs/progress/`), the ONLY authorized deliverable is the specification document. You MUST NOT create implementation code, scripts, or modify catalogs in the same turn. After writing the spec, you MUST stop tools and await human review before proceeding to Stage 2.
+   - **Path-as-Status**: We follow the PARA documentation architecture. Documents in `docs/progress/` represent active WIP; never write manual status tags in file headers.
+   - **Code as Truth**: Production schemas, interfaces, DTOs, and automated tests are the single source of truth. Documentation never duplicates field lists or API payload tables.
+   - **Spec Immutability & Append-Only**: Delivered specifications are frozen historical records. Never modify completed specs retrospectively; add new revisions with incremented indices (`[NextIndex]-feature-...`).
+   <!-- blueprint-workflow:end -->
+   ```
+
+2. **If the marker block DOES exist**:
+   - Compare the current block content with the canonical 5 core directives above.
+   - **If content matches**: Take no action; log that directives are up to date.
+   - **If content differs**: Present a side-by-side diff to the user. Prompt whether to update to canonical directives or retain existing customizations. Never overwrite silently.
 
 ---
 

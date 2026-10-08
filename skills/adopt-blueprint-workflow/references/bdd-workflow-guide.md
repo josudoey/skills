@@ -128,3 +128,43 @@ flowchart TD
 3. **Infinite Scalability**: Pure integers scale smoothly beyond 99 domains or slices without requiring retroactive filename refactoring (`001`).
 4. **Immediate Human & Machine Traceability**: Seeing `docs/progress/1.2/` instantly maps to `docs/blueprint/1.2_...` without needing an index table.
 
+---
+
+## 6. Two-Tier Pointer Architecture & Non-Destructive Adoption
+
+To keep LLM context consumption lean while maintaining rigorous governance, BDD adopts the **Two-Tier Pointer Architecture**:
+
+```mermaid
+flowchart TD
+    subgraph RootTier ["Tier 1: Root Pointer (AGENTS.md)"]
+        Pointer["Root AGENTS.md\nBounded Directives & Invariant Pointers\n(< 45 lines / < 300 tokens)"]
+    end
+
+    subgraph DeepTier ["Tier 2: Deep Governance Engine"]
+        Contrib["CONTRIBUTING.md\n(Canonical Workflow & Contributor Contract)"]
+        Living["docs/reference/\n(Living Specifications & Code Maps)"]
+        Rules[".agents/rules/\n(Project-Specific Standards)"]
+    end
+
+    Pointer -->|"When planning / refactoring"| Contrib
+    Pointer -->|"When navigating domain architecture"| Living
+    Pointer -->|"When checking coding standards"| Rules
+```
+
+### 6.1 Bounded Marker Invariant (`<!-- blueprint-workflow:start -->`)
+To ensure deterministic, idempotent updates across both Greenfield and Brownfield codebases:
+- Core BDD directives are enclosed in explicit comment boundaries:
+  ```markdown
+  <!-- blueprint-workflow:start -->
+  ## Development Workflow & Governance Directives
+  ... (5 Core Principles) ...
+  <!-- blueprint-workflow:end -->
+  ```
+- **Greenfield Deployment**: `templates/AGENTS.md` is pre-packaged with bounded markers.
+- **Brownfield Adoption**: Existing directives or custom rules outside the marker block are never overwritten.
+- **Non-Destructive Update**: When marker blocks exist but content differs, agents must present a side-by-side diff and prompt the user rather than silently overwriting customized directives.
+
+### 6.2 Separation of Concerns
+1. **BDD Core Directives**: Inside the marker block (Workflow & Lifecycle, Stage Gate Isolation, Path-as-Status, Code as Truth, Spec Immutability).
+2. **Project-Specific Standards**: Maintained strictly outside the marker block (e.g., under `## Project Specific Standards`), preserving build commands, environment setups, and custom linters across future workflow upgrades.
+

@@ -26,6 +26,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 5. **Canonical Root Contributor Engine (`CONTRIBUTING.md`)**:
    - *Trade-off*: Workflow governance rules were previously housed internally at `docs/dev-workflow.md`, which was not auto-discovered by GitHub contributor onboarding or community health scanners.
    - *Current Scope*: Elevated the workflow governance engine to repository root `CONTRIBUTING.md` to serve as the unified human/agent contributor contract. The transitional forwarding stub at `docs/dev-workflow.md` has completed its sunset window and is retired, maintaining root `CONTRIBUTING.md` as the exclusive entrypoint.
+6. **Two-Tier Pointer Architecture & Non-Destructive AGENTS.md Adoption**:
+   - *Trade-off*: Balancing lean root agent context (< 45 lines / < 300 tokens) with deterministic, non-destructive workflow enforcement across greenfield and brownfield repositories.
+   - *Current Scope*: Greenfield initialization and brownfield adoption enforce bounded comment markers (`<!-- blueprint-workflow:start -->` ... `<!-- blueprint-workflow:end -->`). Brownfield adoption detects existing marker blocks, performs diff checking, and forbids silent overwriting of customized directives, preserving project-specific standards outside the marker.
 
 
 ---
@@ -74,6 +77,22 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 ### 3.8 Automatic WIP Retirement & Directory Pruning
 - Retiring a specification removes the target file from `docs/progress/` to uphold the **Path-as-Status** standard.
 - If the parent slice directory (e.g., `docs/progress/1.1/`) is left empty after retirement, it must be automatically pruned to maintain repository cleanliness.
+
+### 3.9 Marker Boundary Parity Invariant
+- Every instance of generated or deployed `AGENTS.md`—whether initialized via Greenfield deployment or injected via Brownfield adoption—must encapsulate the 5 core BDD governance directives within explicit comment boundaries:
+  `<!-- blueprint-workflow:start -->` ... `<!-- blueprint-workflow:end -->`
+- The standard BDD directive block must declare:
+  1. **Workflow & Lifecycle** (Mandatory reference to `CONTRIBUTING.md`)
+  2. **Stage Gate Isolation (No Premature Implementation)**
+  3. **Path-as-Status**
+  4. **Code as Truth**
+  5. **Spec Immutability & Append-Only**
+
+### 3.10 Non-Destructive Update Guardrail (Zero-Accidental-Loss)
+- An existing `AGENTS.md` marker block must **never** be silently or unconditionally overwritten.
+- When existing content inside the marker diverges from the standard template, the agent must perform a diff comparison and prompt the user before altering directives.
+- Project-specific instructions outside the marker block must remain untouched under all conditions.
+
 
 ---
 
@@ -146,10 +165,44 @@ flowchart TD
 - **Phase 4 (Interactive Review & Human Sign-Off)**: Renders a structured review card detailing proposed reference updates and targeted file deletions for explicit user approval.
 - **Phase 5 (Atomic Settle, Retirement & Commit)**: Applies reference mutations, deletes the retired progress specification, prunes empty parent slice directories, and provides Conventional Commit guidance.
 
+### 4.4 Non-Destructive AGENTS.md Adoption Engine (`adopt-blueprint-workflow`)
+
+```mermaid
+flowchart TD
+    subgraph Trigger ["Execution: adopt-blueprint-workflow"]
+        Scan["Phase 1: Project & AGENTS.md Inspection"]
+    end
+
+    subgraph Evaluation ["Evaluation & Decision Engine"]
+        Scan --> Decision{"AGENTS.md Exists?"}
+        Decision -->|"No (Greenfield)"| GF["Deploy templates/AGENTS.md\n(Pre-wrapped with bounded markers)"]
+        Decision -->|"Yes (Brownfield)"| BF{"Marker Block Present?"}
+        BF -->|"No"| Append["Safely Append Bounded Marker Block\n(5 Core Principles)"]
+        BF -->|"Yes"| DiffCheck{"Marker Diff Check"}
+        DiffCheck -->|"Identical"| NoOp["Skip with No-Op / Unchanged Notice"]
+        DiffCheck -->|"Divergent / Custom"| Prompt["Interactive Prompt & Diff Review\n(Never blindly overwrite)"]
+    end
+
+    subgraph Target ["Resulting State"]
+        GF --> Idempotent["100% Idempotent & Non-Destructive AGENTS.md"]
+        Append --> Idempotent
+        NoOp --> Idempotent
+        Prompt --> Idempotent
+    end
+```
+
+- **Greenfield Deployment**: Directly copies `templates/AGENTS.md` containing pre-configured `<!-- blueprint-workflow:start -->` and `<!-- blueprint-workflow:end -->` boundaries.
+- **Brownfield Detection**: Checks whether the bounded marker block already exists. If missing, appends the standard block without disturbing custom project directives.
+- **Diff & Non-Destructive Protection**: If existing marker content diverges, performs a side-by-side diff and alerts/prompts the user rather than silently overwriting.
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
 
+- **Pure Skill (Blueprint Workflow Adoption)**: [skills/adopt-blueprint-workflow/SKILL.md](../../skills/adopt-blueprint-workflow/SKILL.md)
+- **BDD Workflow Architectural Guide**: [skills/adopt-blueprint-workflow/references/bdd-workflow-guide.md](../../skills/adopt-blueprint-workflow/references/bdd-workflow-guide.md)
+- **Root Governance Pointer Template**: [skills/adopt-blueprint-workflow/templates/AGENTS.md](../../skills/adopt-blueprint-workflow/templates/AGENTS.md)
+- **Workflow Contributor Guide Template**: [skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md](../../skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md)
 - **Pure Skill (Workflow Audit)**: [skills/audit-workflow-fitness/SKILL.md](../../skills/audit-workflow-fitness/SKILL.md)
 - **Pure Skill (Spec Settlement)**: [skills/settle-spec/SKILL.md](../../skills/settle-spec/SKILL.md)
 - **Settle Checklist Reference**: [skills/settle-spec/references/settle-checklist.md](../../skills/settle-spec/references/settle-checklist.md)
@@ -160,4 +213,5 @@ flowchart TD
 - **Lifecycle Engine Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
 - **Domain Master Blueprint**: [docs/blueprint/1.0_agentic-engineering-governance.md](../blueprint/1.0_agentic-engineering-governance.md)
 - **Upstream Product Blueprint**: [docs/blueprint/1.1_workflow-governance.md](../blueprint/1.1_workflow-governance.md)
+
 
