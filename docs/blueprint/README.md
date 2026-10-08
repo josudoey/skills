@@ -25,7 +25,6 @@ Files in this directory follow the 3-Tier Pragmatic WBS pattern:
 ## 1. Metadata
 - **Blueprint Code**: [e.g., 1.1]
 - **Target Applications / Modules**: [e.g., web-client, api-server, cli]
-- **Owner**: [Team or Lead]
 - **Date**: YYYY-MM-DD
 
 ## 2. Overview & Problem Statement
