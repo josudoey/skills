@@ -108,4 +108,5 @@ flowchart TD
 - **Pure Skill Implementation**: [skills/audit-stale-ref/SKILL.md](../../skills/audit-stale-ref/SKILL.md)
 - **Repository Catalog**: [README.md](../../README.md)
 - **Repository Standards**: [.agents/rules/skills-repository.md](../../.agents/rules/skills-repository.md)
+- **Domain Master Blueprint**: [docs/blueprint/1.0_agentic-engineering-governance.md](../blueprint/1.0_agentic-engineering-governance.md)
 - **Upstream Product Blueprint**: [docs/blueprint/1.2_code-reference-integrity.md](../blueprint/1.2_code-reference-integrity.md)

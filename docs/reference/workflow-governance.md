@@ -4,7 +4,7 @@
 
 ## 1. Overview
 
-This living specification documents the system invariants, architectural trade-offs, diagnostic rule sets, and navigation maps governing development workflow health across repositories, anchoring directly to [Blueprint 1.1: Adaptive Development Workflow Management](../blueprint/1.1_adaptive-skill-bootstrap.md).
+This living specification documents the system invariants, architectural trade-offs, diagnostic rule sets, and navigation maps governing development workflow health across repositories, anchoring directly to [Blueprint 1.1: Workflow Governance](../blueprint/1.1_workflow-governance.md) within [Domain 1: Agentic Engineering Governance](../blueprint/1.0_agentic-engineering-governance.md).
 
 It establishes an **"ESLint for Development Workflow & Markdown Governance"**, replacing arbitrary 100-point composite scoring with a binary **Quality Gate (`PASSED` vs `BLOCKED`)**, zero-noise UNIX silence for clean runs, and an actionable diagnostic engine.
 
@@ -110,4 +110,5 @@ flowchart TD
 - **Repository Standards**: [.agents/rules/skills-repository.md](../../.agents/rules/skills-repository.md)
 - **Governance Directives**: [AGENTS.md](../../AGENTS.md)
 - **Lifecycle Engine Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
-- **Upstream Product Blueprint**: [docs/blueprint/1.1_adaptive-skill-bootstrap.md](../blueprint/1.1_adaptive-skill-bootstrap.md)
+- **Domain Master Blueprint**: [docs/blueprint/1.0_agentic-engineering-governance.md](../blueprint/1.0_agentic-engineering-governance.md)
+- **Upstream Product Blueprint**: [docs/blueprint/1.1_workflow-governance.md](../blueprint/1.1_workflow-governance.md)
