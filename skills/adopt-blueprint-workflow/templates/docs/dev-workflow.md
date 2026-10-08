@@ -11,6 +11,7 @@ To maximize engineering velocity and eliminate the maintenance overhead of manua
 1. **Product Blueprint ➔ `docs/blueprint/` (Vision & Intent)**:
    - **Purpose**: Captures long-term product vision, user personas, desired end-to-end flows, and business goals (WHY & WHAT).
    - **Retention Policy**: Serves as a frozen architectural design archive. **Never retroactively modify blueprints for tactical implementation trade-offs**. The blueprint permanently anchors original intent.
+   - **Boundary Guardrail (Capability vs Tactical Leakage)**: Blueprints declare enduring business and system capabilities. **Tactical implementation details (concrete rule IDs, function signatures, CLI flags, token budgets, or test assertions) are strictly prohibited** in blueprints; these belong solely to active specifications (`docs/progress/[blueprint-code]/`).
 2. **Active Project Specifications ➔ `docs/progress/[blueprint-code]/` (WIP Deltas)**:
    - **Purpose**: Active, scoped implementation plans detailing module interactions, data flows, and schema deltas for the specific blueprint capability (e.g., `docs/progress/1.2/1-feature-stripe.md`).
    - **Path-as-Status**: A document's presence inside `docs/progress/` signifies it is pending or actively in development. **Explicit status fields (e.g., Draft / Approved / In Progress) are strictly prohibited** in document headers.
@@ -24,6 +25,15 @@ To maximize engineering velocity and eliminate the maintenance overhead of manua
      - Implementation details (API payloads, schema fields, status codes) are verified directly against production schemas, typed contracts, and automated tests.
 4. **Project Resources**:
    - Production code, global conventions, configuration, and build toolchains constitute project resources.
+5. **Language Invariant (English-Only Maintenance)**:
+   - All documentation across `docs/blueprint/`, `docs/progress/`, and `docs/reference/` must be authored and maintained in English. This ensures universal accessibility across diverse development teams, international open-source distribution, and consistent token efficiency across multi-agent toolchains.
+6. **Agentic Documentation Formatting (Structured Lists over Tables)**:
+   - For AI agent cognitive efficiency and repository hygiene, documentation governing rules, behaviors, and constraints must use **hierarchical bulleted lists with bold keys (`- **Key**: ...`)** rather than Markdown tables.
+   - **Token Noise & Attention**: Tables incur heavy delimiter noise (`|`, `---`) that disrupts linear transformer attention across multi-sentence descriptions.
+   - **Syntactic Limitations**: Table cells cannot nest code blocks, multi-line examples, or alert callouts (`> [!NOTE]`).
+   - **Git Diff Hygiene**: Adjusting a single cell in a markdown table causes multi-column reformatting and long-line diff conflicts; bulleted lists produce clean, atomic single-line diffs.
+   - *(Exception: Minimal 2–3 column comparative matrices with $\le 5$ rows and short text cells are acceptable for high-level summaries).*
+
 
 ```mermaid
 flowchart TD
