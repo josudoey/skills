@@ -109,5 +109,5 @@ flowchart TD
 - **Repository Catalog**: [README.md](../../README.md)
 - **Repository Standards**: [.agents/rules/skills-repository.md](../../.agents/rules/skills-repository.md)
 - **Governance Directives**: [AGENTS.md](../../AGENTS.md)
-- **Lifecycle Engine Guide**: [docs/dev-workflow.md](../dev-workflow.md)
+- **Lifecycle Engine Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
 - **Upstream Product Blueprint**: [docs/blueprint/1.1_adaptive-skill-bootstrap.md](../blueprint/1.1_adaptive-skill-bootstrap.md)

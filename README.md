@@ -90,7 +90,7 @@ npx skills use josudoey/skills@gen-commit-message
 
 - **Description**: Bootstraps or upgrades any software repository (polyglot: Rust, Go, Python, TypeScript, Java, etc.) into an enterprise-grade Blueprint-Driven Development (BDD) engineering workflow.
 - **Key Features**:
-  - **Self-Contained `docs/` Layout**: Standardizes `docs/blueprint/` (frozen product intent), `docs/progress/` (active vertical slices), `docs/reference/` (living specifications & code maps), and `docs/dev-workflow.md` (the definitive lifecycle guide).
+  - **Self-Contained `docs/` Layout**: Standardizes `docs/blueprint/` (frozen product intent), `docs/progress/` (active vertical slices), `docs/reference/` (living specifications & code maps), and `CONTRIBUTING.md` (the canonical lifecycle guide and contributor contract).
   - **Lightweight Pointer Pattern**: Maintains an ultra-lean root `AGENTS.md` (< 45 lines) directing AI agents to load workflow details on-demand, preventing context window bloat.
   - **Spec Immutability & Settle Gatekeeper**: Enforces append-only feature revision and structured knowledge settlement before ephemeral WIP specs are deleted.
   - **Dual-Mode Greenfield / Brownfield**: Safely adopts existing codebases using bounded marker blocks (`<!-- blueprint-workflow:start -->`), preserving 100% of pre-existing commands and instructions.
@@ -120,4 +120,10 @@ npx skills use josudoey/skills@gen-commit-message
   - **Convention Guardrails**: Automatically routes to specific naming, framework, and error handling conventions based on the change layer.
   - **Token Discipline**: Keeps overall context retrieval tightly budgeted (< 6,000 ~ 8,000 tokens) using slice reading and interface-first discovery.
   - **Context Summary Card**: Outputs a concise summary card before implementation begins.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our Blueprint-Driven Development (BDD) workflow, specification guidelines, and code hygiene standards.
 
