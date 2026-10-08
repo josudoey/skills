@@ -7,6 +7,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 ## Available Skills
 
 - **[`adopt-blueprint-workflow`](./skills/adopt-blueprint-workflow)**: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow with self-contained `docs/` and lightweight `AGENTS.md` pointers.
+- **[`audit-stale-ref`](./skills/audit-stale-ref)**: Audit code comments for dead file paths, broken symbol pointers, and reverse documentation coupling with a read-only diagnostic engine.
 - **[`audit-workflow-fitness`](./skills/audit-workflow-fitness)**: Audit and evaluate project development workflows, markdown governance, and spec fitness with a token-guarded diagnostic engine.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
