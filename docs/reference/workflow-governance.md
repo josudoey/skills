@@ -25,7 +25,7 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
    - *Current Scope*: All navigation pointers are maintained unilaterally in `docs/reference/[domain].md` (Code Navigation Map). Source code and skill definitions remain 100% decoupled and portable, eliminating redundant maintenance overhead when files move.
 5. **Canonical Root Contributor Engine (`CONTRIBUTING.md`)**:
    - *Trade-off*: Workflow governance rules were previously housed internally at `docs/dev-workflow.md`, which was not auto-discovered by GitHub contributor onboarding or community health scanners.
-   - *Current Scope*: Elevated the workflow governance engine to repository root `CONTRIBUTING.md` to serve as the unified human/agent contributor contract, while maintaining `docs/dev-workflow.md` as an active backwards-compatible forwarding pointer.
+   - *Current Scope*: Elevated the workflow governance engine to repository root `CONTRIBUTING.md` to serve as the unified human/agent contributor contract. The transitional forwarding stub at `docs/dev-workflow.md` has completed its sunset window and is retired, maintaining root `CONTRIBUTING.md` as the exclusive entrypoint.
 
 
 ---
@@ -54,9 +54,9 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \sum \text{e
 ### 3.4 Language Standard (English-Only Maintenance)
 - All governance artifacts (`AGENTS.md`, `.agents/rules/**`), lifecycle specifications (`docs/**`), and skill definitions (`skills/**`) must be maintained in English to ensure cross-ecosystem portability and zero cognitive friction for polyglot AI coding agents.
 
-### 3.5 Universal Accessibility & Backward-Compatibility Invariant
-- Root `CONTRIBUTING.md` serves both human open-source contributors and autonomous AI agents without semantic divergence.
-- Any external reference, automated bot, or historical script accessing `docs/dev-workflow.md` is guaranteed to resolve to an active forwarding pointer directing to `../CONTRIBUTING.md`.
+### 3.5 Universal Accessibility Invariant
+- Root `CONTRIBUTING.md` serves as the exclusive, canonical entrypoint for both human open-source contributors and autonomous AI agents without semantic divergence.
+- Workflow and development governance discovery relies strictly on standard repository root conventions (`CONTRIBUTING.md`, `AGENTS.md`), eliminating internal legacy forwarding stubs.
 
 ---
 

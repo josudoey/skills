@@ -45,7 +45,7 @@ BDD adopts the principles of the **PARA Method** (Projects, Areas, Resources, Ar
 | **Vision (WHY)** | `docs/blueprint/` | Captures ideal user journeys, personas, and long-term business goals. | **Frozen Archive**: Never mutated for tactical implementation trade-offs. |
 | **Projects (HOW)** | `docs/progress/` | Active development milestones, end-to-end vertical slices, and contract deltas. | **Ephemeral & Append-Only**: Path-as-status; deleted upon verification through the Settle Gatekeeper. |
 | **Areas (TRUTH)** | `docs/reference/` | Enduring domain living specifications, business invariants, and code navigation maps. | **Evergreen Living Reality**: Flat by default; strictly prohibits duplicate field tables. |
-| **Resources** | Codebase & Conventions | Production code, schemas, build tools, and `docs/dev-workflow.md`. | Primary operational assets. |
+| **Resources** | Codebase & Conventions | Production code, schemas, build tools, and `CONTRIBUTING.md`. | Primary operational assets. |
 
 ---
 

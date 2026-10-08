@@ -1,6 +1,6 @@
 ---
 name: adopt-blueprint-workflow
-description: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow. Sets up root CONTRIBUTING.md (canonical workflow & contributor guide) with docs/ (blueprint, progress, reference, dev-workflow.md) and lightweight AGENTS.md pointers with non-destructive brownfield adoption. Use when establishing development conventions, bootstrapping new projects, or upgrading existing codebases into structured living-spec governance.
+description: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow. Sets up root CONTRIBUTING.md (canonical workflow & contributor guide) with docs/ (blueprint, progress, reference) and lightweight AGENTS.md pointers with non-destructive brownfield adoption. Use when establishing development conventions, bootstrapping new projects, or upgrading existing codebases into structured living-spec governance.
 ---
 
 # Adopt Blueprint Workflow
@@ -8,7 +8,7 @@ description: Initialize or adapt a repository into an enterprise-grade Blueprint
 A portable, language-agnostic skill that establishes or upgrades a repository's engineering governance into the **Blueprint-Driven Development (BDD)** workflow.
 
 This skill automates the setup of:
-1. **Self-Contained Governance Layout**: Root `CONTRIBUTING.md` (canonical workflow & contributor guide), `docs/blueprint/`, `docs/progress/`, `docs/reference/`, and `docs/dev-workflow.md` (forwarding pointer).
+1. **Self-Contained Governance Layout**: Root `CONTRIBUTING.md` (canonical workflow & contributor guide), `docs/blueprint/`, `docs/progress/`, and `docs/reference/`.
 2. **Lightweight `AGENTS.md` Pointer**: Injects non-destructive pointers into the project root, keeping conversation tokens lean (< 45 lines) while enforcing strict invariant guardrails.
 3. **Dual-Mode Compatibility**: Supports greenfield empty repositories and non-destructive brownfield adoption for existing codebases.
 
@@ -67,10 +67,9 @@ For any directory created or lacking an explanatory guide, write the correspondi
 
 ### Phase 3: Workflow Document Deployment
 
-Deploy or verify the definitive workflow specification at **`CONTRIBUTING.md`** (and optional forwarding pointer at `docs/dev-workflow.md`):
+Deploy or verify the definitive workflow specification at **`CONTRIBUTING.md`**:
 - `CONTRIBUTING.md`: Sourced from [templates/CONTRIBUTING.md](file://templates/CONTRIBUTING.md).
-- `docs/dev-workflow.md`: Sourced from [templates/docs/dev-workflow.md](file://templates/docs/dev-workflow.md).
-- If either document already exists, compare content. If updates are needed, prompt the user before modifying.
+- If the document already exists, compare content. If updates are needed, prompt the user before modifying.
 
 ---
 
@@ -116,7 +115,6 @@ Conclude execution by presenting a clean, structured summary card:
 - **Ecosystem Detected**: [e.g., TypeScript Monorepo (pnpm/nx) | Rust Workspace | Go | Python]
 - **Document Structure**:
   - `CONTRIBUTING.md` (Workflow guide, Contributor contract, Settle Gatekeeper)
-  - `docs/dev-workflow.md` (Backwards-compatible forwarding pointer)
   - `docs/blueprint/` (Product vision & intent)
   - `docs/progress/` (Active vertical slices)
   - `docs/reference/` (Living specs & Code Maps)
@@ -134,5 +132,4 @@ Conclude execution by presenting a clean, structured summary card:
 
 - [Architectural Guide & BDD Whitepaper](./references/bdd-workflow-guide.md)
 - [Contributor Workflow Template](./templates/CONTRIBUTING.md)
-- [Workflow Forwarding Guide Template](./templates/docs/dev-workflow.md)
 - [Root Pointer Template](./templates/AGENTS.md)

@@ -80,7 +80,7 @@ To prevent cognitive overload and avoid consuming tens of thousands of tokens by
    - Check presence and file sizes of:
      - Root governance: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `GEMINI.md`.
      - Spec directories: `docs/blueprint/`, `docs/progress/`, `docs/reference/`, `docs/convention/`, `.agents/rules/`.
-     - Workflow engine: `CONTRIBUTING.md` (or fallback `docs/dev-workflow.md`).
+     - Workflow engine: `CONTRIBUTING.md`.
 3. **Compute Byte & Token Footprint**:
    - Calculate total byte counts for governance documents.
    - Derive estimated token counts:
