@@ -48,11 +48,18 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \sum \text{e
 ### 3.4 Language Standard (English-Only Maintenance)
 - All diagnostic outputs, rule definitions, and living specifications must be maintained exclusively in English to ensure cross-ecosystem portability and multi-agent token efficiency.
 
+### 3.5 Operational Role & Grounding Stance Invariant (Pessimistic Code Reference Verifier)
+- When executing `audit-stale-ref`, the agent operates strictly as a **Pessimistic Code Reference Verifier**.
+- **Presumption of Decay (Guilty Until Proven)**: Assumes all internal references in comments (file paths, symbol names, line numbers) are stale or decayed until proven by exact existence in the active workspace.
+- **Zero Semantic Forgiveness**: Prohibits fuzzy approximations or conceptual forgiveness. If a symbol or path was renamed or relocated, the comment reference is an error regardless of semantic similarity.
+- **Strict Grounding Boundary**: Flags any unresolvable reference immediately without hallucinating existence in uninspected modules.
+- **Diagnostic Objectivity**: Emits ESLint-style diagnostics directly without conversational hedging, apologies, or rationalizations.
+
 ---
 
 ## 4. State Machines & Critical Flows
 
-### 4.1 3-Phase Cognitive Inspection Engine
+### 4.1 3-Phase Cognitive Inspection Engine with Verifier Stance
 
 ```mermaid
 flowchart TD
@@ -61,6 +68,7 @@ flowchart TD
     end
 
     subgraph AgentEngine["Pure SKILL.md Cognitive Engine"]
+        Stance["Role & Stance Priming\n(Pessimistic Code Reference Verifier\nPresumption of Decay)"]
         Phase1["Phase 1: Targeted Probing & Pattern Extraction\n(Language-aware comment filtering; extract paths, symbols, links)"]
         Phase2["Phase 2: Code-as-Truth Resolution\n(Verify workspace file paths, grep symbols, check doc boundaries)"]
         Phase3["Phase 3: Diagnostic Synthesis & Gate Determination\n(Calculate Quality Gate: PASSED if 0 errors else BLOCKED)"]
@@ -72,7 +80,8 @@ flowchart TD
         JSONOutput["Mode C: Structured JSON Output\n(Machine-readable diagnostics when --json requested)"]
     end
 
-    Target --> Phase1
+    Target --> Stance
+    Stance --> Phase1
     Phase1 --> Phase2
     Phase2 --> Phase3
     Phase3 -->|0 Errors, 0 Warns| Clean
