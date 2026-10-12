@@ -100,6 +100,13 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **UNIX Silence ("Silence is golden")**: In clean runs (0 errors, 0 warnings), emit only minimal status output (< 50 tokens) with zero conversational preambles or pleasantries.
 - **Strict Read-Only Invariant**: The agent acts exclusively as an analytical inspector and never mutates or patches files during an audit run.
 
+### 3.12 Operational Role & Architectural Curation Stance Invariant (Minimalist Architectural Curator)
+- When executing `settle-spec`, the agent operates strictly as a **Minimalist Architectural Curator & Living Spec Archivist**.
+- **Ruthless Pruning (Discard Ephemeral Trivia)**: Proactively discards API route tables, CRUD field dictionaries, and request/response payloads during synthesis. Production code and type declarations are the single source of truth (Code as Truth).
+- **Invariance & Flow Extraction**: Focuses exclusively on enduring knowledge: cross-system protocols, state machine transitions (Mermaid diagrams), boundary fault-tolerance rules, and canonical Code Navigation Maps.
+- **Decisive WIP Retirement**: Treats progress specs in `docs/progress/` as temporary scaffolding. Once verified code and tests exist and architectural invariants are settled, retires the spec without hesitation or regret.
+- **Living Spec Leanliness**: Enforces strict leanliness in `docs/reference/` (< 3,000 tokens per domain) to prevent agent context window inflation in future cycles.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -153,22 +160,24 @@ flowchart TD
   1. [Actionable remediation step]
   ```
 
-### 4.3 5-Phase Cognitive Settlement Engine (`settle-spec`)
+### 4.3 5-Phase Cognitive Settlement Engine with Curator Stance (`settle-spec`)
 
 ```mermaid
 flowchart TD
-    Trigger["Trigger: /settle-spec [path]"] --> P1["Phase 1: Pre-flight & Target Resolution"]
+    Trigger["Trigger: /settle-spec [path]"] --> Stance["Role & Stance Priming\n(Minimalist Architectural Curator)"]
+    Stance --> P1["Phase 1: Pre-flight & Target Resolution"]
     P1 --> P2["Phase 2: Three-Question Gatekeeper Evaluation"]
-    P2 --> P3["Phase 3: Living Reference & Code Map Synthesis"]
+    P2 --> P3["Phase 3: Living Reference & Code Map Synthesis\n(Zero DTO Copies, Ruthless Pruning)"]
     P3 --> P4["Phase 4: Interactive Review & User Sign-Off"]
     P4 --> P5["Phase 5: Atomic Settle, Retirement & Commit Suggestion"]
 
     P4 -->|"User Requests Edits / Abort"| P3
 ```
 
+- **Stance Priming**: Primes agent persona as Minimalist Architectural Curator to reject ephemeral duplication and embrace decisive retirement.
 - **Phase 1 (Pre-flight & Target Resolution)**: Resolves target progress spec path or prompts user with an interactive list of active specs. Verifies production files and automated tests exist.
 - **Phase 2 (Three-Question Gatekeeper Evaluation)**: Analyzes spec against Q1 (state flows), Q2 (fault tolerance/invariants), and Q3 (self-explanatory logic), eliminating ephemeral DTO tables.
-- **Phase 3 (Living Reference & Code Map Synthesis)**: Synthesizes enduring invariants and diagrams into `docs/reference/[domain].md` and updates the Code Navigation Map.
+- **Phase 3 (Living Reference & Code Map Synthesis)**: Synthesizes enduring invariants and diagrams into `docs/reference/[domain].md` and updates the Code Navigation Map with zero redundant DTO payloads.
 - **Phase 4 (Interactive Review & Human Sign-Off)**: Renders a structured review card detailing proposed reference updates and targeted file deletions for explicit user approval.
 - **Phase 5 (Atomic Settle, Retirement & Commit)**: Applies reference mutations, deletes the retired progress specification, prunes empty parent slice directories, and provides Conventional Commit guidance.
 

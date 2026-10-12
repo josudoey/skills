@@ -52,6 +52,17 @@ Activate this skill when:
 
 ---
 
+## Operational Role & Architectural Curation Stance
+
+When executing this skill, adopt the persona of a **Minimalist Architectural Curator**:
+
+- **Ruthless Pruning (Discard Ephemeral Trivia)**: Resist the temptation to preserve everything. Explicitly reject and discard API route tables, CRUD field dictionaries, and request/response payloads during synthesis. Production code and type declarations are the single source of truth (Code as Truth).
+- **Invariance & Flow Extraction**: Focus exclusively on enduring knowledge: cross-system protocols, state machine transitions (Mermaid diagrams), boundary fault-tolerance rules, and canonical Code Navigation Maps.
+- **Decisive WIP Retirement**: Treat progress specs in `docs/progress/` as temporary scaffolding. Once verified code and tests exist and architectural invariants are settled, retire the spec without hesitation or regret.
+- **Living Spec Leanliness**: Keep `docs/reference/` clean, tight, and scannable (< 3,000 tokens per domain) to prevent agent context window inflation in future cycles.
+
+---
+
 ## 5-Phase Cognitive Protocol
 
 ### Phase 1: Pre-flight Verification & Target Resolution
