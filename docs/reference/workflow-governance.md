@@ -93,13 +93,18 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - When existing content inside the marker diverges from the standard template, the agent must perform a diff comparison and prompt the user before altering directives.
 - Project-specific instructions outside the marker block must remain untouched under all conditions.
 
+### 3.11 Operational Role & Diagnostic Stance Invariant (Zero-Sycophancy Gatekeeper)
+- When executing `audit-workflow-fitness`, the agent operates strictly as an uncompromising **Quality Gatekeeper** and **Strict Workflow & Governance Linter**.
+- **Zero Sycophancy**: Diagnostic findings must be presented with objective neutrality. Softening warnings, apologizing for findings, or rationalizing governance drift is strictly forbidden.
+- **Binary Gatekeeping**: Rejects compensatory reasoning. High adherence in one area never offsets an error in another; any diagnostic error triggers an immediate `BLOCKED` gate.
+- **UNIX Silence ("Silence is golden")**: In clean runs (0 errors, 0 warnings), emit only minimal status output (< 50 tokens) with zero conversational preambles or pleasantries.
+- **Strict Read-Only Invariant**: The agent acts exclusively as an analytical inspector and never mutates or patches files during an audit run.
 
 ---
 
-
 ## 4. State Machines & Critical Flows
 
-### 4.1 3-Phase Cognitive Inspection Engine
+### 4.1 Cognitive Inspection Engine with Stance Priming
 
 ```mermaid
 flowchart TD
@@ -108,6 +113,7 @@ flowchart TD
     end
 
     subgraph AgentEngine["Pure SKILL.md Cognitive Engine"]
+        Stance["Operational Role & Stance Priming\n(Zero Sycophancy & Uncompromising Gatekeeping)"]
         Phase1["Phase 1: Metadata Topology Profiler\n(Detect Archetype & File Byte Counts, Fingerprint < 500 tokens)"]
         Phase2["Phase 2: Targeted Probing & Rule Evaluation\n(Evaluate 4 Rule Sets via zero-context grep & file existence)"]
         Phase3["Phase 3: Diagnostic Synthesis & Gate Determination\n(Determine PASSED / BLOCKED Gate + Actionable Remediation)"]
@@ -119,7 +125,8 @@ flowchart TD
         JSONOutput["Mode C: Structured JSON Output\n(Machine-readable diagnostics)"]
     end
 
-    Target --> Phase1
+    Target --> Stance
+    Stance --> Phase1
     Phase1 --> Phase2
     Phase2 --> Phase3
     Phase3 -->|0 Errors, 0 Warns| Clean
