@@ -29,7 +29,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 6. **Two-Tier Pointer Architecture & Non-Destructive AGENTS.md Adoption**:
    - *Trade-off*: Balancing lean root agent context (< 45 lines / < 300 tokens) with deterministic, non-destructive workflow enforcement across greenfield and brownfield repositories.
    - *Current Scope*: Greenfield initialization and brownfield adoption enforce bounded comment markers (`<!-- blueprint-workflow:start -->` ... `<!-- blueprint-workflow:end -->`). Brownfield adoption detects existing marker blocks, performs diff checking, and forbids silent overwriting of customized directives, preserving project-specific standards outside the marker.
-
+7. **Single-Entrypoint Convention Purity Governance**:
+   - *Trade-off*: Evaluated creating a dedicated standalone blueprint and cognitive skill (`audit-convention-purity`).
+   - *Current Scope*: Subsumed convention purity rules directly into `audit-workflow-fitness` as Rule Set 5 (`purity/`), preventing tool proliferation, avoiding WBS code collision with `progressive-context-loader` (1.3), and preserving a single unified governance entrypoint.
 
 ---
 
@@ -39,7 +41,7 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 - The audit engine operates strictly in **read-only mode** on repository governance artifacts (`AGENTS.md`, `.agents/`, `docs/`).
 - It **never** mutates, deletes, or modifies application source code or documentation during an audit run.
 
-### 3.2 The Four Diagnostic Rule Sets
+### 3.2 The Five Diagnostic Rule Sets
 
 | Rule ID | Severity | Scope | Invariant Requirement |
 | :--- | :--- | :--- | :--- |
@@ -50,6 +52,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 | `truth/no-duplicate-api-dictionaries` | 🟡 `warn` | `docs/reference/**` | Living specifications must never duplicate API payload tables or database schema dictionaries (**Code as Truth**). |
 | `traceability/valid-codemap-paths` | 🔴 `error` | `docs/reference/*.md` | All file paths declared in Code Navigation Maps must exist in the workspace. |
 | `traceability/valid-blueprint-mapping` | 🔴 `error` | `docs/progress/[code]/` | Active slice directories must map to an existing Blueprint under `docs/blueprint/`. For `skills-repository`, skills must follow `skills/<name>/SKILL.md`. |
+| `purity/no-concrete-implementation-leak` | 🔴 `error` | `.agents/rules/**`, `docs/convention/**`, `AGENTS.md` | Conventions must not contain concrete business logic or component implementations matching active code. Must relocate to `docs/reference/` and completely remove without reverse links. |
+| `purity/no-search-collision-symbol` | 🟡 `warn` | `.agents/rules/**`, `docs/convention/**`, `AGENTS.md` | Illustrative examples must avoid concrete production symbols matching workspace code (search pollution). Must use Role-based abstractions. |
+| `purity/no-reference-pointer-leak` | 🟡 `warn` | `.agents/rules/**`, `docs/convention/**` | Conventions must not link directly to volatile domain reference documents (`docs/reference/*.md`), preserving pattern purity. |
 
 ### 3.3 Quality Gate Invariant
 $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \sum \text{errors} = 0 \\ \mathbf{BLOCKED}, & \text{if } \sum \text{errors} > 0 \end{cases}$$
@@ -107,6 +112,11 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Decisive WIP Retirement**: Treats progress specs in `docs/progress/` as temporary scaffolding. Once verified code and tests exist and architectural invariants are settled, retires the spec without hesitation or regret.
 - **Living Spec Leanliness**: Enforces strict leanliness in `docs/reference/` (< 3,000 tokens per domain) to prevent agent context window inflation in future cycles.
 
+### 3.13 Convention Purity & Role-Based Abstraction Invariant
+- Conventions serve strictly as extensible macro-patterns and mental models—never as concrete functions or domain-specific implementation rules.
+- When illustrative code or identifiers are required in conventions, they must use semantic Role-based abstractions (e.g. `SecondarySettlementPanel` instead of `CashCloseSection`) to ensure zero search collision during codebase refactoring.
+- Extracted business implementations belong in `docs/reference/<domain>.md`, and must be completely removed from conventions without reverse reference links.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -122,7 +132,7 @@ flowchart TD
     subgraph AgentEngine["Pure SKILL.md Cognitive Engine"]
         Stance["Operational Role & Stance Priming\n(Zero Sycophancy & Uncompromising Gatekeeping)"]
         Phase1["Phase 1: Metadata Topology Profiler\n(Detect Archetype & File Byte Counts, Fingerprint < 500 tokens)"]
-        Phase2["Phase 2: Targeted Probing & Rule Evaluation\n(Evaluate 4 Rule Sets via zero-context grep & file existence)"]
+        Phase2["Phase 2: Targeted Probing & Rule Evaluation\n(Evaluate 5 Rule Sets via zero-context grep & file existence)"]
         Phase3["Phase 3: Diagnostic Synthesis & Gate Determination\n(Determine PASSED / BLOCKED Gate + Actionable Remediation)"]
     end
 

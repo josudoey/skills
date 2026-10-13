@@ -19,7 +19,7 @@ flowchart TD
 
     subgraph AgentEngine["Pure SKILL.md Cognitive Engine"]
         Phase1["Phase 1: Metadata Topology Profiler\n(Detect Archetype & File Byte Counts, Fingerprint < 500 tokens)"]
-        Phase2["Phase 2: Targeted Probing & Rule Evaluation\n(Evaluate 4 Rule Sets via zero-context grep & file existence)"]
+        Phase2["Phase 2: Targeted Probing & Rule Evaluation\n(Evaluate 5 Rule Sets via zero-context grep & file existence)"]
         Phase3["Phase 3: Diagnostic Synthesis & Gate Determination\n(Determine PASSED / BLOCKED Gate + Actionable Remediation)"]
     end
 
@@ -99,7 +99,7 @@ To prevent cognitive overload and avoid consuming tens of thousands of tokens by
 
 ---
 
-### Phase 2: Targeted Probing Across 4 Rule Sets
+### Phase 2: Targeted Probing Across 5 Rule Sets
 
 Categorize all findings into two strict severity levels:
 - 🔴 **`error` (Blocker)**: Critical failures that break agent navigation, cause runtime tool-call crashes, or violate core lifecycle invariants. **Any `error` immediately blocks the Quality Gate.**
@@ -140,6 +140,18 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \text{errors
   - Validate that active slice directories under `docs/progress/[code]/` correspond to a valid blueprint code in `docs/blueprint/`.
   - For `skills-repository` archetypes, verify adherence to `.agents/rules/skills-repository.md` (e.g., standard skill directory structure `skills/<skill-name>/SKILL.md` and bulleted catalog links).
 
+#### Rule Set 5: `purity` (Convention Purity & Decoupling Rules)
+
+- **`purity/no-concrete-implementation-leak` (`error`)**:
+  - Scan `.agents/rules/**`, `docs/convention/**`, and `AGENTS.md` for concrete business logic, state reducers, or full component implementations verified to exist in active production code.
+  - Conventions govern extensible macro-patterns, not domain implementations.
+- **`purity/no-search-collision-symbol` (`warn`)**:
+  - Scan convention files for concrete PascalCase or camelCase production symbols in examples or narrative text that match active workspace symbols, polluting global searches.
+  - Recommend semantic Role-based abstractions (e.g., `SecondarySettlementPanel` instead of `CashCloseSection`).
+- **`purity/no-reference-pointer-leak` (`warn`)**:
+  - Scan convention files for explicit links pointing to domain living references (`docs/reference/*.md`).
+  - Conventions must remain pure architectural patterns decoupled from volatile domain documents.
+
 ---
 
 ### Phase 3: Diagnostic Synthesis & Gate Determination
@@ -149,7 +161,7 @@ Aggregate findings and evaluate the binary Quality Gate:
 #### Mode A: Clean Run (UNIX Silence / Zero Noise)
 When 0 errors and 0 warnings are detected:
 ```text
-✔ Checked [N] governance files across 4 dimensions.
+✔ Checked [N] governance files across 5 dimensions.
 ✨ 0 errors, 0 warnings. Quality Gate: PASSED (Archetype: [archetype]).
 ```
 
@@ -200,3 +212,6 @@ When diagnosing violations, provide direct, copy-pasteable remediation instructi
 2. **Broken Link / Stale Code Map**: "Update relative path `[broken/path]` to existing file `[valid/path]`, or prune obsolete pointer."
 3. **Token Friction**: "Split monolithic document into modular topical files (e.g., `docs/convention/naming.md`, `docs/convention/error-handling.md`)."
 4. **Duplicate API Dictionary**: "Remove static table and replace with a direct pointer to production schema or typed contract in code."
+5. **Concrete Implementation Leak**: "Extract business logic and domain components to `docs/reference/<domain>.md`. Completely delete implementation block from convention without leaving reverse links."
+6. **Search Collision Symbol**: "Replace concrete production symbol with a semantic Role-based abstraction (e.g. `SecondarySettlementPanel` instead of `CashCloseSection`)."
+7. **Reference Link Leak**: "Prune domain reference link from convention. Keep conventions pattern-pure and decoupled from domain documents."
