@@ -72,10 +72,14 @@ When activated, the agent operates exclusively as a **Strict Workflow & Governan
 
 To prevent cognitive overload and avoid consuming tens of thousands of tokens by indiscriminately dumping full documents into context, the agent must strictly execute the **Metadata-First Protocol**:
 
-1. **Never read full convention/reference files upfront**: File token weights must be estimated from directory listing byte counts (`bytes / 3.8` for ASCII; `bytes / 2.0` for CJK / multi-byte UTF-8) obtained via `list_dir` or file stats.
-2. **Targeted probing**: Search for broken relative links, invalid Code Map references, and governance anti-patterns using zero-context pattern searching (`grep_search` / `grep` / existence tests) without loading full file bodies.
-3. **Selective slice reading**: If a violation or broken link is suspected, view only the relevant line range (`StartLine` / `EndLine`) rather than loading entire files.
-4. **Context Budget**: The complete audit workflow should consume $< 2,000$ tokens of context overhead.
+1. **Single-pass profiling**: Catalog governance files in a single pass. Gauge file size and token overhead using physical line counts and byte metrics (`bytes / 3.8` for ASCII; `bytes / 2.0` for CJK / multi-byte UTF-8) without iterative per-directory exploration loops.
+2. **Static line-count gauge heuristic**:
+   - **Safe**: $\le 250$ lines ($\approx 1,800 - 2,500$ tokens in mixed CJK/ASCII environments).
+   - **Advisory Smell (`warn`)**: $251 - 400$ lines ($2,500 - 4,000$ tokens).
+   - **Blocker (`error` / Split Required)**: $> 400$ lines ($> 4,000$ tokens or $> 12\text{ KB}$).
+3. **Targeted probing**: Search for broken relative links, invalid Code Map references, and governance anti-patterns using zero-context pattern searching (`grep_search` / `grep` / existence tests) without loading full file bodies.
+4. **Selective slice reading**: If a violation or broken link is suspected, view only the relevant line range (`StartLine` / `EndLine`) rather than loading entire files.
+5. **Context Budget**: The complete audit workflow should consume $< 2,000$ tokens of context overhead.
 
 ---
 
@@ -88,12 +92,12 @@ To prevent cognitive overload and avoid consuming tens of thousands of tokens by
    - `monorepo`: Presence of `pnpm-workspace.yaml`, `nx.json`, `lerna.json`, `go.work`, or `Cargo.toml` with `[workspace]`.
    - `application`: Standard single-package configurations (`package.json`, `Cargo.toml`, `go.mod`, `pyproject.toml`, etc.) without workspace files.
 2. **Catalog Governance Artifacts**:
-   - Check presence and file sizes of:
+   - Check presence, line counts, and file sizes of:
      - Root governance: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `GEMINI.md`.
      - Spec directories: `docs/blueprint/`, `docs/progress/`, `docs/reference/`, `docs/convention/`, `.agents/rules/`.
      - Workflow engine: `CONTRIBUTING.md`.
 3. **Compute Byte & Token Footprint**:
-   - Calculate total byte counts for governance documents.
+   - Calculate total byte counts and line counts for governance documents.
    - Derive estimated token counts:
      $$\text{Tokens}_{\text{est}} \approx \begin{cases} \text{bytes} / 3.8, & \text{ASCII} \\ \text{bytes} / 2.0, & \text{CJK / Multi-byte} \end{cases}$$
 
@@ -118,10 +122,13 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \text{errors
 
 #### Rule Set 2: `friction` (Cognitive & Token Friction Rules)
 
-- **`friction/max-token-overhead` (`warn`)**:
-  - Check estimated token counts across all rule and convention files (`docs/convention/**`, `.agents/rules/**`, `AGENTS.md`).
-  - Trigger a warning if any individual convention file exceeds ~3,000 tokens ($\approx \text{bytes} / 3.8$ for ASCII, $\text{bytes} / 2.0$ for CJK).
-  - Flag files $> 6,000$ tokens as high-friction monolithic files requiring decomposition.
+- **`friction/max-token-overhead` (`warn` / `error`)**:
+  - Check physical line counts and estimated tokens across all rule and convention files (`docs/convention/**`, `.agents/rules/**`, `AGENTS.md`).
+  - Severity thresholds:
+    - $\le 250$ lines ($\le 2,500$ tokens): **Clean**.
+    - $251 - 400$ lines ($2,500 - 4,000$ tokens): 🟡 `warn` (Advisory smell; recommend topical decomposition).
+    - $> 400$ lines ($> 4,000$ tokens or $> 12\text{ KB}$): 🔴 `error` (Blocker; monolithic document requiring mandatory decomposition).
+  - **Anti-Loop Remediation Mandate**: Strictly forbid iterative sentence micro-trimming loops (editing text $\to$ script counting $\to$ repeating). Enforce **Decomposition-First**: relocate domain logic to `docs/reference/` or split into sibling topic documents (e.g., `01-architecture-core.md`, `02-naming-conventions.md`).
 - **`friction/no-bloated-schema-tables` (`warn`)**:
   - Inspect markdown convention files for prohibited bloated schema/field tables (tables containing $> 8$ rows of type/field DTO definitions, rather than concise architectural comparison tables).
 
@@ -142,12 +149,18 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \text{errors
 
 #### Rule Set 5: `purity` (Convention Purity & Decoupling Rules)
 
+- **`purity/convention-portability-leak` (`error`)**:
+  - Verify that `docs/convention/**` remains **cross-project portable** per the **4-Pillar Litmus Test**:
+    1. *Portability*: Conventions must apply universally across projects; project-specific business narratives belong in `docs/reference/`.
+    2. *Naming Abstraction*: Must use semantic Roles (`[Role]Executor`, `BaseHandler`) rather than production domain symbols.
+    3. *Path Expression*: **Path Patterns / Globs** (`skills/*/...`, `packages/**`) are explicitly allowed. Exact production file paths are prohibited.
+    4. *Lifecycle Trigger*: Conventions evolve during architectural shifts, not product feature PRs.
 - **`purity/no-concrete-implementation-leak` (`error`)**:
   - Scan `.agents/rules/**`, `docs/convention/**`, and `AGENTS.md` for concrete business logic, state reducers, or full component implementations verified to exist in active production code.
-  - Conventions govern extensible macro-patterns, not domain implementations.
+  - Illustrative code snippets in conventions must remain minimal syntax skeletons ($\le 10$ lines) using Role-based abstractions.
 - **`purity/no-search-collision-symbol` (`warn`)**:
   - Scan convention files for concrete PascalCase or camelCase production symbols in examples or narrative text that match active workspace symbols, polluting global searches.
-  - Recommend semantic Role-based abstractions (e.g., `SecondarySettlementPanel` instead of `CashCloseSection`).
+  - Recommend semantic Role-based abstractions (e.g., `SecondaryOperationPanel`, `[Role]Executor`).
 - **`purity/no-reference-pointer-leak` (`warn`)**:
   - Scan convention files for explicit links pointing to domain living references (`docs/reference/*.md`).
   - Conventions must remain pure architectural patterns decoupled from volatile domain documents.
@@ -210,8 +223,9 @@ When structured output is requested:
 When diagnosing violations, provide direct, copy-pasteable remediation instructions:
 1. **Manual Status Header**: "Remove explicit status declarations from header. Move document to appropriate lifecycle folder (`docs/progress/` for WIP, `docs/reference/` for settled invariants)."
 2. **Broken Link / Stale Code Map**: "Update relative path `[broken/path]` to existing file `[valid/path]`, or prune obsolete pointer."
-3. **Token Friction**: "Split monolithic document into modular topical files (e.g., `docs/convention/naming.md`, `docs/convention/error-handling.md`)."
-4. **Duplicate API Dictionary**: "Remove static table and replace with a direct pointer to production schema or typed contract in code."
-5. **Concrete Implementation Leak**: "Extract business logic and domain components to `docs/reference/<domain>.md`. Completely delete implementation block from convention without leaving reverse links."
-6. **Search Collision Symbol**: "Replace concrete production symbol with a semantic Role-based abstraction (e.g. `SecondarySettlementPanel` instead of `CashCloseSection`)."
-7. **Reference Link Leak**: "Prune domain reference link from convention. Keep conventions pattern-pure and decoupled from domain documents."
+3. **Token Friction & Monolithic Bloat (Anti-Loop)**: "Apply **Decomposition-First**. Do NOT perform iterative text micro-trimming loops. Split file into topical sub-documents (target $\le 250$ lines each) or extract domain logic into `docs/reference/<domain>.md`."
+4. **Convention Portability Leak**: "Apply the **4-Pillar Litmus Test**. Relocate project-specific domain narratives and exact file paths to `docs/reference/<domain>.md`. Retain only cross-project portable macro-patterns with path patterns / globs."
+5. **Duplicate API Dictionary**: "Remove static table and replace with a direct pointer to production schema or typed contract in code."
+6. **Concrete Implementation Leak**: "Extract business logic and domain components to `docs/reference/<domain>.md`. Completely delete implementation block from convention without leaving reverse links."
+7. **Search Collision Symbol**: "Replace concrete production symbol with a semantic Role-based abstraction (e.g. `SecondaryOperationPanel`, `[Role]Executor`)."
+8. **Reference Link Leak**: "Prune domain reference link from convention. Keep conventions pattern-pure and decoupled from domain documents."

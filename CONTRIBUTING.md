@@ -46,15 +46,19 @@ To maximize engineering velocity and eliminate manual tracking friction, this re
      - Completed specifications with passing automated tests represent delivered historical facts. **Retroactive modification is strictly prohibited**.
      - Requirements evolutions must be created as new specifications with the next incremented index (e.g., `[NextIndex]-feature-[slug].md`), documenting only the net delta.
 3. **Living Domain Realities & Architectural Trade-offs ➔ `docs/reference/` (Living Specs)**:
-   - **Purpose**: The enduring single source of truth for current production reality—capturing core business invariants, blueprint trade-offs, and living code navigation maps.
+   - **Purpose**: The enduring single source of truth for current production reality—strictly **project-specific** to this codebase. Captures core domain invariants, blueprint trade-offs, state machines, and canonical Code Navigation Maps pointing to exact workspace source files.
    - **Strict Rule: No Duplicate Field Lists (Code as Truth)**:
      - `docs/reference/` **never duplicates PRDs or field dictionaries**.
      - Implementation details (API payloads, schema fields, status codes) are verified directly against production schemas, typed contracts, and automated tests.
-4. **Project Resources**:
+4. **Cross-Project Patterns & Engineering Guardrails ➔ `docs/convention/` (Conventions)**:
+   - **Purpose**: General architectural macro-patterns, design system foundations, naming rules, and directory topologies.
+   - **Portability & Path Patterns**: Must remain **cross-project portable**. Explicitly permits and encourages **Path Patterns / Globs** (e.g., `skills/*/...`, `packages/*/src/**`). Strictly prohibits project-specific domain business narratives or exact single-instance production file paths (enforce via the 4-Pillar Litmus Test).
+   - **Anti-Loop Sizing & Decomposition-First**: Target $\le 250$ lines ($\le 2,500$ tokens). Documents $> 400$ lines must be structurally decomposed into sibling topic files or domain logic extracted to `docs/reference/`. Iterative sentence micro-trimming loops are strictly forbidden.
+5. **Project Resources**:
    - Production code, global conventions, configuration, and build toolchains constitute project resources.
-5. **Language Invariant (English-Only Maintenance)**:
-   - All documentation across `docs/blueprint/`, `docs/progress/`, `docs/reference/`, and `CONTRIBUTING.md` must be authored and maintained exclusively in English.
-6. **Agentic Documentation Formatting (Structured Lists over Tables)**:
+6. **Language Invariant (English-Only Maintenance)**:
+   - All documentation across `docs/blueprint/`, `docs/progress/`, `docs/reference/`, `docs/convention/`, and `CONTRIBUTING.md` must be authored and maintained exclusively in English.
+7. **Agentic Documentation Formatting (Structured Lists over Tables)**:
    - For AI agent cognitive efficiency and repository hygiene, documentation governing rules, behaviors, and constraints must use **hierarchical bulleted lists with bold keys (`- **Key**: ...`)** rather than Markdown tables.
    - *(Exception: Minimal 2–3 column comparative matrices with $\le 5$ rows and short text cells are acceptable for high-level summaries).*
 

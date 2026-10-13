@@ -32,6 +32,12 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 7. **Single-Entrypoint Convention Purity Governance**:
    - *Trade-off*: Evaluated creating a dedicated standalone blueprint and cognitive skill (`audit-convention-purity`).
    - *Current Scope*: Subsumed convention purity rules directly into `audit-workflow-fitness` as Rule Set 5 (`purity/`), preventing tool proliferation, avoiding WBS code collision with `progressive-context-loader` (1.3), and preserving a single unified governance entrypoint.
+8. **Anti-Loop Remediation & Static Line-Count Heuristics**:
+   - *Trade-off*: Balancing strict context token constraints with preventing repetitive edit-and-recalculate loops by AI coding agents.
+   - *Current Scope*: Established the Anti-Loop Remediation Protocol in `audit-workflow-fitness` and `CONTRIBUTING.md`. Codified physical line-count heuristics ($\le 250$ safe, $251-400$ `warn`, $> 400$ `error`) and mandated Decomposition-First (modular file splits or domain logic relocation to `docs/reference/`) instead of sentence-level micro-trimming loops.
+9. **Cross-Project Convention vs. Project-Specific Reference Demarcation**:
+   - *Trade-off*: Defining explicit boundaries between cross-project reusable patterns and codebase-specific living reality.
+   - *Current Scope*: Codified the 4-Pillar Litmus Test (Portability, Naming Abstraction, Path Expression, Lifecycle Trigger). `docs/convention/` is restricted to cross-project portable patterns and explicitly permitted to use Path Patterns / Globs, while `docs/reference/` houses project-specific domain invariants, state machines, and exact Code Navigation Maps.
 
 ---
 
@@ -47,12 +53,13 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 | :--- | :--- | :--- | :--- |
 | `consistency/no-manual-status-header` | 🔴 `error` | `docs/progress/**` | Documents must never contain manual status headers (`Status: Draft`, `Status: In Progress`). Status is strictly derived from directory path (**Path-as-Status**). |
 | `consistency/no-broken-relative-links` | 🔴 `error` | `docs/**`, `AGENTS.md` | All local relative markdown links must resolve to existing files or directories. |
-| `friction/max-token-overhead` | 🟡 `warn` | `docs/convention/**`, `.agents/rules/**` | Flag convention files $> 3,000$ tokens ($\text{bytes} / 3.8$ for ASCII; $\text{bytes} / 2.0$ for CJK). Flag $> 6,000$ tokens as monolithic files requiring modular decomposition. |
+| `friction/max-token-overhead` | 🟡 `warn` / 🔴 `error` | `docs/convention/**`, `.agents/rules/**` | Flag files $251 - 400$ lines as advisory smell (`warn`). Flag $> 400$ lines as monolithic blockers (`error`) requiring mandatory decomposition. Enforces **Decomposition-First Anti-Loop**. |
 | `friction/no-bloated-schema-tables` | 🟡 `warn` | `docs/convention/**` | Tables in convention files must not contain $> 8$ rows of type/field DTO definitions. |
 | `truth/no-duplicate-api-dictionaries` | 🟡 `warn` | `docs/reference/**` | Living specifications must never duplicate API payload tables or database schema dictionaries (**Code as Truth**). |
 | `traceability/valid-codemap-paths` | 🔴 `error` | `docs/reference/*.md` | All file paths declared in Code Navigation Maps must exist in the workspace. |
 | `traceability/valid-blueprint-mapping` | 🔴 `error` | `docs/progress/[code]/` | Active slice directories must map to an existing Blueprint under `docs/blueprint/`. For `skills-repository`, skills must follow `skills/<name>/SKILL.md`. |
-| `purity/no-concrete-implementation-leak` | 🔴 `error` | `.agents/rules/**`, `docs/convention/**`, `AGENTS.md` | Conventions must not contain concrete business logic or component implementations matching active code. Must relocate to `docs/reference/` and completely remove without reverse links. |
+| `purity/convention-portability-leak` | 🔴 `error` | `docs/convention/**`, `.agents/rules/**` | Conventions must be cross-project portable per the 4-Pillar Litmus Test. Path Patterns / Globs are explicitly allowed; exact production paths and domain narratives are prohibited. |
+| `purity/no-concrete-implementation-leak` | 🔴 `error` | `.agents/rules/**`, `docs/convention/**`, `AGENTS.md` | Conventions must not contain concrete business logic or component implementations matching active code. Minimal syntax skeletons ($\le 10$ lines) using Role-based abstractions permitted. |
 | `purity/no-search-collision-symbol` | 🟡 `warn` | `.agents/rules/**`, `docs/convention/**`, `AGENTS.md` | Illustrative examples must avoid concrete production symbols matching workspace code (search pollution). Must use Role-based abstractions. |
 | `purity/no-reference-pointer-leak` | 🟡 `warn` | `.agents/rules/**`, `docs/convention/**` | Conventions must not link directly to volatile domain reference documents (`docs/reference/*.md`), preserving pattern purity. |
 
@@ -112,10 +119,23 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Decisive WIP Retirement**: Treats progress specs in `docs/progress/` as temporary scaffolding. Once verified code and tests exist and architectural invariants are settled, retires the spec without hesitation or regret.
 - **Living Spec Leanliness**: Enforces strict leanliness in `docs/reference/` (< 3,000 tokens per domain) to prevent agent context window inflation in future cycles.
 
-### 3.13 Convention Purity & Role-Based Abstraction Invariant
-- Conventions serve strictly as extensible macro-patterns and mental models—never as concrete functions or domain-specific implementation rules.
-- When illustrative code or identifiers are required in conventions, they must use semantic Role-based abstractions (e.g. `SecondarySettlementPanel` instead of `CashCloseSection`) to ensure zero search collision during codebase refactoring.
-- Extracted business implementations belong in `docs/reference/<domain>.md`, and must be completely removed from conventions without reverse reference links.
+### 3.13 Convention Portability, 4-Pillar Litmus Test & Path-Pattern Invariant
+- **Cross-Project Portability**: Conventions in `docs/convention/**` serve strictly as extensible macro-patterns and mental models—never as concrete functions, domain-specific implementations, or single-project narratives.
+- **The 4-Pillar Litmus Test**:
+  1. *Portability*: Conventions must remain valid across unrelated projects; domain-specific invariants belong solely in `docs/reference/`.
+  2. *Naming Abstraction*: Illustrative code or prose identifiers in conventions must use semantic Role-based abstractions (e.g., `SecondaryOperationPanel`, `[Role]Executor`) to ensure zero search collision.
+  3. *Path Expression*: Conventions are explicitly permitted and encouraged to use **Path Patterns / Globs** (e.g., `skills/*/...`, `packages/**`). Exact production paths are strictly forbidden in conventions.
+  4. *Lifecycle Trigger*: Conventions evolve during architecture or design system shifts, never during ordinary product feature PRs.
+- **Code Snippet Hygiene**: Illustrative code snippets in conventions must remain minimal syntax skeletons ($\le 10$ lines) and avoid domain state or API handling.
+- **Clean Extraction**: Extracted business implementations belong in `docs/reference/<domain>.md`, and must be completely removed from conventions without reverse reference links.
+
+### 3.14 Anti-Loop Remediation & Static Line-Count Heuristic Invariant
+- **Decomposition-First**: When a convention document exceeds recommended size limits, agents are strictly forbidden from performing repetitive text micro-trimming loops (editing prose $\to$ script token counting $\to$ repeating).
+- **Physical Line-Count Heuristic**:
+  - **Safe**: $\le 250$ lines ($\approx 1,800 - 2,500$ tokens in mixed CJK/ASCII environments).
+  - **Advisory Smell (`warn`)**: $251 - 400$ lines ($2,500 - 4,000$ tokens).
+  - **Blocker (`error` / Split Required)**: $> 400$ lines ($> 4,000$ tokens or $> 12\text{ KB}$).
+- **Single-Pass Remediation**: Agents must immediately split oversized files into modular topical sub-documents (e.g., `01-architecture-core.md`, `02-naming-conventions.md`) or relocate domain logic to `docs/reference/`.
 
 ---
 
