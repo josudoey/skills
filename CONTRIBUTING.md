@@ -112,6 +112,7 @@ flowchart LR
   - **Stage 1 Gate (No Premature Implementation)**: The deliverable of Stage 1 is strictly the specification document in `docs/progress/`. Implementation directories, application code, and scripts MUST NOT be created until the specification is reviewed and approved by an engineer.
 
 ### Stage 2: Implementation & Verification
+- **Standard Tooling**: Use [`build-spec`](./skills/build-spec) to parse approved specifications, lock the File Mutation Matrix, execute implementation sequentially, and mandate passing the Verification Oracle.
 - **Rules**:
   - **Unidirectional Navigation**: Implementation code and skills remain clean, pure, and decoupled from internal documentation paths. Traceability is maintained unilaterally in `docs/reference/[domain].md` (Code Navigation Map). Code comments SHOULD NOT maintain reverse pointers (e.g. `// Ref: ...`) back to documentation, preventing redundant maintenance friction and cross-boundary coupling.
   - Implement accompanying automated tests (unit, contract, and integration tests).

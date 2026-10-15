@@ -156,6 +156,20 @@ Before any active specification in `docs/progress/` is retired, the settlement e
   - **Mode A (BDD Mode)**: Detected via `docs/progress/` or `docs/blueprint/`. Targets `docs/progress/[blueprint-code]/[Index]-feature-[slug].md`.
   - **Mode B (Universal Mode)**: Detected when BDD markers are absent. Adapts to existing spec folders (`specs/`, `docs/specs/`, `docs/plans/`) or defaults to `.agents/specs/[feature-slug].md`.
 
+### 3.18 File Mutation Matrix Boundary Invariant
+- The Stage 2 execution engine (`build-spec`) is strictly locked to paths declared in the target specification's File Mutation Matrix.
+- If an agent discovers that an unlisted file requires modification, it must pause and propose an upstream specification amendment rather than silently modifying disk.
+- Modifying paths marked as `FORBIDDEN` is a fatal governance violation.
+
+### 3.19 Verification Oracle Non-Negotiable Pass Invariant
+- Stage 2 implementation cannot be declared complete through model self-assessment alone.
+- The agent must execute the exact CLI verification commands specified in the specification and verify an exit code of 0.
+- If verification commands fail, bounded self-correction is capped at 3 loops before halting and escalating raw logs for human intervention.
+
+### 3.20 Pre-Implementation Cleanliness Guardrail
+- Before modifying any file on disk during Stage 2, the execution engine must inspect working tree status via `git status --short`.
+- If uncommitted changes collide with the target File Mutation Matrix, the agent must warn and seek user confirmation before proceeding.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -289,6 +303,27 @@ flowchart TD
 - **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context to eliminate qualitative adjectives and unassertable criteria.
 - **Phase 5 (Delivery & Stage Gate Isolation)**: Writes spec to disk and freezes tool usage immediately for human review.
 
+### 4.6 Stage 2 Implementation & Verification Protocol (`build-spec`)
+
+```mermaid
+flowchart TD
+    Trigger["Trigger: /build-spec [path/to/spec.md]"] --> P1["Phase 1: Spec Parsing & Matrix Lock\n(Extract Matrix, Forbidden Zones & Oracle)"]
+    P1 --> P2["Phase 2: Pre-Implementation Cleanliness Check\n(Verify Git Status & Boundary Isolation)"]
+    P2 --> P3["Phase 3: Sequential Step Execution\n(Atomic Step Checkpoints: Step 1 -> 2 -> 3)"]
+    P3 --> P4["Phase 4: Automated Verification Oracle Execution\n(Run Test / Lint Commands in Terminal)"]
+    
+    P4 -- "Tests Fail (Exit Code != 0)" --> Fix["Self-Correction Loop\n(Stay within Matrix & Re-test)"]
+    Fix --> P4
+    
+    P4 -- "Tests Pass (100% Green)" --> P5["Phase 5: Stage 2 Completion Sign-off\n(Handoff to audit-fitness & settle-spec)"]
+```
+
+- **Phase 1 (Spec Parsing & Matrix Lock)**: Resolves target spec path or discovers active candidates. Parses and locks File Mutation Matrix boundaries, execution sequence, and Verification Oracle commands.
+- **Phase 2 (Pre-Implementation Cleanliness Check)**: Inspects working tree via `git status --short` to ensure uncommitted human work is not overwritten.
+- **Phase 3 (Sequential Implementation Execution)**: Enforces Types/Interfaces first, followed by Core Logic, and Accompanying Tests. Verifies all tool targets remain within the Matrix.
+- **Phase 4 (Automated Verification Oracle Execution)**: Runs test/lint commands in shell environment; requires exit code 0 to pass. Bounded self-correction up to 3 loops.
+- **Phase 5 (Stage 2 Completion Sign-off)**: Emits completion proof card and provides handoff guidance to `audit-workflow-fitness`, `gen-commit-message`, and `settle-spec`.
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
@@ -298,6 +333,8 @@ flowchart TD
 - **Root Governance Pointer Template**: [skills/adopt-blueprint-workflow/templates/AGENTS.md](../../skills/adopt-blueprint-workflow/templates/AGENTS.md)
 - **Workflow Contributor Guide Template**: [skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md](../../skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md)
 - **Pure Skill (Workflow Audit)**: [skills/audit-workflow-fitness/SKILL.md](../../skills/audit-workflow-fitness/SKILL.md)
+- **Pure Skill (Stage 2 Build & Verification)**: [skills/build-spec/SKILL.md](../../skills/build-spec/SKILL.md)
+- **Checkpointed Execution Checklist**: [skills/build-spec/references/execution-checklist.md](../../skills/build-spec/references/execution-checklist.md)
 - **Pure Skill (Specification Authoring)**: [skills/craft-spec/SKILL.md](../../skills/craft-spec/SKILL.md)
 - **Specification Template Reference**: [skills/craft-spec/references/spec-template.md](../../skills/craft-spec/references/spec-template.md)
 - **Clarity Gatekeeper Checklist**: [skills/craft-spec/references/clarity-gatekeeper-checklist.md](../../skills/craft-spec/references/clarity-gatekeeper-checklist.md)

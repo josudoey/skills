@@ -9,6 +9,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 - **[`adopt-blueprint-workflow`](./skills/adopt-blueprint-workflow)**: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow with self-contained `docs/` and lightweight `AGENTS.md` pointers.
 - **[`audit-stale-ref`](./skills/audit-stale-ref)**: Audit code comments for dead file paths, broken symbol pointers, and reverse documentation coupling with a read-only diagnostic engine.
 - **[`audit-workflow-fitness`](./skills/audit-workflow-fitness)**: Audit and evaluate project development workflows, markdown governance, and spec fitness with a token-guarded diagnostic engine.
+- **[`build-spec`](./skills/build-spec)**: Execute Stage 2 Implementation in Blueprint-Driven Development, enforcing strict File Mutation Matrix boundaries, sequential execution, and automated Verification Oracles.
 - **[`craft-spec`](./skills/craft-spec)**: Formalize Stage 1 Specification Authoring across BDD and Universal repositories, enforcing the Zero-Assumption Gatekeeper, Code Immunity, and downstream agent-ready contracts.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
@@ -105,6 +106,16 @@ npx skills use josudoey/skills@gen-commit-message
   - **Binary Quality Gate**: Eliminates compensatory composite score fallacies; any `error` immediately blocks the gate, while `warn` flags advisories.
   - **Token-Guarded Inspection Protocol**: Employs metadata-first inspection with byte-to-token ratio estimation and UNIX silence, keeping diagnostic context overhead $< 2,000$ tokens.
   - **Pure-Skill Portability**: Built as a pure cognitive Markdown engine (`SKILL.md`) with zero scripts and zero runtime dependencies.
+
+### `build-spec`
+
+- **Description**: Executes Stage 2 Implementation across Blueprint-Driven Development (BDD) and universal software repositories. Parses approved specifications, strictly locks implementation boundaries to the declared File Mutation Matrix, executes sequential implementation steps with checkpointing, and mandates passing the automated Verification Oracle before declaring completion.
+- **Key Features**:
+  - **File Mutation Matrix Lock**: Parses and enforces boundaries (`CREATE`, `MODIFY`, `DELETE`, `FORBIDDEN`), strictly prohibiting unvetted modifications or scope creep.
+  - **Pre-Implementation Cleanliness Check**: Verifies working directory status against target matrix paths before touching files on disk.
+  - **Sequential Implementation Protocol**: Directs agents through deterministic execution stages (Types & Interfaces $\to$ Core Logic $\to$ Automated Tests).
+  - **Automated Verification Oracle Mandate**: Executes target CLI test and lint suites in the shell, requiring 100% green exit codes (with bounded self-correction) before Stage 2 sign-off.
+  - **Pure-Skill Portability**: 100% pure cognitive Markdown workflow (`SKILL.md`) with zero scripts and zero runtime dependencies.
 
 ### `craft-spec`
 
