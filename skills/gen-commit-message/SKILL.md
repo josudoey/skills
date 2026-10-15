@@ -8,9 +8,9 @@ Generate an Angular-style Git commit message in English based on staged changes.
 ## Guidelines
 
 1. **Analyze Staged Changes**:
-   - Directly run the skill script `./scripts/get-staged-diff.sh` without asking for permission to analyze the changes that are currently staged.
-   - If there are no staged changes (i.e., the output of the script is empty), reply directly with "no staged changes" and stop.
-   - **Important**: DO NOT proactively run any Git commands that modify the staged changes (such as `git add`, `git commit`, `git reset`, `git checkout`, etc.). Only analyze what is already in the staging area. Always re-run the `./scripts/get-staged-diff.sh` script to re-analyze the files every time this skill is executed.
+   - Inspect the currently staged changes by running `git diff --cached` directly in the active repository terminal (or use the auxiliary script `./scripts/get-staged-diff.sh` if running from within the skill directory).
+   - If there are no staged changes (i.e., the diff output is empty), reply directly with "no staged changes" and stop immediately.
+   - **Important**: DO NOT proactively run any Git commands that modify the repository state (such as `git add`, `git commit`, `git reset`, `git checkout`). Only inspect and analyze what is already staged. Always re-run `git diff --cached` to re-analyze files whenever this skill is triggered.
 
 2. **Commit Message Format**:
    - The message must follow the **Angular Commit Convention**: `<type>(<scope>): <subject>`

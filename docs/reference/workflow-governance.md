@@ -170,6 +170,11 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - Before modifying any file on disk during Stage 2, the execution engine must inspect working tree status via `git status --short`.
 - If uncommitted changes collide with the target File Mutation Matrix, the agent must warn and seek user confirmation before proceeding.
 
+### 3.21 Universal CWD Portability & Read-Only Git Invariant (`gen-commit-message`)
+- **Universal CWD Portability**: The skill must inspect staged changes directly via `git diff --cached` within the active target workspace directory rather than relying on relative script paths, ensuring zero runtime failures across external repositories.
+- **Strict Read-Only Git Boundary**: The engine must operate in read-only inspection mode. State-mutating Git operations (`git add`, `git commit`, `git reset`, `git checkout`) are strictly prohibited.
+- **Empty Diff Fast-Exit**: When `git diff --cached` returns empty or whitespace-only output, the engine halts immediately with "no staged changes" without prompting or auto-staging files.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -324,6 +329,18 @@ flowchart TD
 - **Phase 4 (Automated Verification Oracle Execution)**: Runs test/lint commands in shell environment; requires exit code 0 to pass. Bounded self-correction up to 3 loops.
 - **Phase 5 (Stage 2 Completion Sign-off)**: Emits completion proof card and provides handoff guidance to `audit-workflow-fitness`, `gen-commit-message`, and `settle-spec`.
 
+### 4.7 Direct Staged Change Inspection Protocol (`gen-commit-message`)
+
+```mermaid
+flowchart TD
+    Trigger["Trigger: /gen-commit-message"] --> Inspect["Inspect Staged Changes\n(Direct 'git diff --cached' in Target Workspace CWD)"]
+    Inspect --> Empty{"Is Staged Diff Empty?"}
+    Empty -- "Yes" --> Halt["Reply 'no staged changes' & Halt"]
+    Empty -- "No" --> Analyze["Analyze Changeset & Extract Scope"]
+    Analyze --> Format["Synthesize Angular Commit Message\n<type>(<scope>): <subject>"]
+    Format --> Present["Present Commit Message in Code Block\n(Zero Mutation / Pure Read-Only)"]
+```
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
@@ -338,6 +355,8 @@ flowchart TD
 - **Pure Skill (Specification Authoring)**: [skills/craft-spec/SKILL.md](../../skills/craft-spec/SKILL.md)
 - **Specification Template Reference**: [skills/craft-spec/references/spec-template.md](../../skills/craft-spec/references/spec-template.md)
 - **Clarity Gatekeeper Checklist**: [skills/craft-spec/references/clarity-gatekeeper-checklist.md](../../skills/craft-spec/references/clarity-gatekeeper-checklist.md)
+- **Pure Skill (Commit Message Generation)**: [skills/gen-commit-message/SKILL.md](../../skills/gen-commit-message/SKILL.md)
+- **Staged Diff Script (CLI Fast-Path)**: [skills/gen-commit-message/scripts/get-staged-diff.sh](../../skills/gen-commit-message/scripts/get-staged-diff.sh)
 - **Pure Skill (Spec Settlement)**: [skills/settle-spec/SKILL.md](../../skills/settle-spec/SKILL.md)
 - **Settle Checklist Reference**: [skills/settle-spec/references/settle-checklist.md](../../skills/settle-spec/references/settle-checklist.md)
 - **Code Map Design Patterns**: [skills/settle-spec/references/code-map-patterns.md](../../skills/settle-spec/references/code-map-patterns.md)
