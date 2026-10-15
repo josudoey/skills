@@ -21,13 +21,13 @@ flowchart LR
 - **Step 1: Discussion / Alignment**:
   - Open a GitHub issue or discussion to align on intent, problem scope, and target architecture before writing code.
 - **Step 2: Stage 1 Specification**:
-  - Draft an active vertical slice specification in `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-example.md`).
+  - Author an active vertical slice specification using [`craft-spec`](./skills/craft-spec) in `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-example.md`).
 - **Step 3: Specification Review Gate**:
   - Implementation is strictly prohibited until the specification is reviewed and approved by repository maintainers.
 - **Step 4: Stage 2 Implementation & Automated Verification**:
   - Implement skills, schemas, or tool configs alongside automated tests. Run `audit-workflow-fitness` to verify zero regression.
 - **Step 5: Stage 3 Settle Protocol & Pull Request**:
-  - Settle enduring invariants and code maps into `docs/reference/`, clean up ephemeral WIP specs according to the Settle Gatekeeper, and submit a pull request.
+  - Settle enduring invariants and code maps into `docs/reference/` using [`settle-spec`](./skills/settle-spec), clean up ephemeral WIP specs according to the Settle Gatekeeper, and submit a pull request.
 
 ---
 
@@ -100,6 +100,7 @@ flowchart LR
 ```
 
 ### Stage 1: Draft in Progress
+- **Standard Tooling**: Use [`craft-spec`](./skills/craft-spec) to evaluate the Zero-Assumption Gatekeeper, enforce Code Immunity, and author contract-driven specifications.
 - **Scope**:
   - **Vertical Slice (Recommended)**: For end-to-end features spanning shared schemas, backend logic, and frontend/CLI presentation, prefer a single slice file: `docs/progress/[blueprint-code]/[Index]-feature-[slug].md` (e.g., `docs/progress/1.1/1-feature-example.md`).
   - **Design-First**: Cross-cutting mechanisms (`mechanism`), shared schemas (`data-type`), or public contracts (`contract`).
@@ -117,7 +118,7 @@ flowchart LR
   - Run project-level linters and test suites to verify zero regressions.
 
 ### Stage 3: Settle, Triage & Retention
-Once automated tests pass and acceptance criteria are met, execute the **Settle Protocol**:
+Once automated tests pass and acceptance criteria are met, execute the **Settle Protocol** (via [`settle-spec`](./skills/settle-spec)):
 
 1. **Knowledge Settlement**:
    - If the implementation scoped down features relative to the Blueprint, document the rationale under `Blueprint Trade-offs` in `docs/reference/[domain].md`.

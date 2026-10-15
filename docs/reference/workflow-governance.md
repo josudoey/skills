@@ -137,6 +137,25 @@ Before any active specification in `docs/progress/` is retired, the settlement e
   - **Blocker (`error` / Split Required)**: $> 400$ lines ($> 4,000$ tokens or $> 12\text{ KB}$).
 - **Single-Pass Remediation**: Agents must immediately split oversized files into modular topical sub-documents (e.g., `01-architecture-core.md`, `02-naming-conventions.md`) or relocate domain logic to `docs/reference/`.
 
+### 3.15 Code Immunity Guardrail (Strict Read-Only Stance)
+- Skills operating in specification authoring (`craft-spec`) must operate strictly in **read-only mode** on codebase implementation files.
+- Modifying application code, tests, package manifests, or tool configs (`src/**`, `lib/**`, `apps/**`, `packages/**`) is strictly prohibited during Stage 1.
+- The only permitted persistent deliverable is the Stage 1 specification markdown file in the resolved spec directory.
+
+### 3.16 Zero-Assumption Gatekeeper Invariant (The 4-Pillar Clarity Test)
+- Upstream agents must never extrapolate, invent business logic, or assume unstated technical choices.
+- Before authoring a specification, the agent must evaluate the **4-Pillar Clarity Test**:
+  1. *Scope & Intent (WHY)*: Core user problem, business goal, and out-of-scope boundaries defined.
+  2. *Inputs & Dependencies (WHAT)*: Data models, configs, environment prerequisites, and APIs declared.
+  3. *Architectural Invariants (CONSTRAINTS)*: Framework conventions, design systems, unidirectional code maps acknowledged.
+  4. *Verification Oracle (ACCEPTANCE)*: Deterministic CLI command and pass/fail criteria identified.
+- If any pillar is ambiguous, the agent must immediately halt with a structured clarification alert and targeted options.
+
+### 3.17 Adaptive Workspace Archetype Invariant (Dual-Mode Portability)
+- Stage 1 specification workflows must adapt to host repositories without imposing artificial folder pollution:
+  - **Mode A (BDD Mode)**: Detected via `docs/progress/` or `docs/blueprint/`. Targets `docs/progress/[blueprint-code]/[Index]-feature-[slug].md`.
+  - **Mode B (Universal Mode)**: Detected when BDD markers are absent. Adapts to existing spec folders (`specs/`, `docs/specs/`, `docs/plans/`) or defaults to `.agents/specs/[feature-slug].md`.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -241,6 +260,35 @@ flowchart TD
 - **Brownfield Detection**: Checks whether the bounded marker block already exists. If missing, appends the standard block without disturbing custom project directives.
 - **Diff & Non-Destructive Protection**: If existing marker content diverges, performs a side-by-side diff and alerts/prompts the user rather than silently overwriting.
 
+### 4.5 Stage 1 Specification Authoring & Zero-Assumption Gatekeeper Protocol (`craft-spec`)
+
+```mermaid
+flowchart TD
+    UserReq["User Requirement / Intent"] --> Gate{"Zero-Assumption\nGatekeeper"}
+    
+    Gate -- "Unclear / Missing Invariants / No Oracle" --> Clarify["🛑 Halt & Targeted Clarification\n(Single/Multi-choice Inquiries)"]
+    Clarify --> UserReq
+    
+    Gate -- "100% Clear & Verified" --> Archetype{"Workspace Archetype\nDetection"}
+    
+    Archetype -- "BDD Mode (docs/progress/)" --> GroundBDD["Grounding via Blueprint & Living Specs\nTarget: docs/progress/[code]/[Index]-feature-[slug].md"]
+    Archetype -- "Universal Mode (Generic Repo)" --> GroundUni["Grounding via Manifests, Types & Readme\nTarget: specs/ or .agents/specs/[slug].md"]
+    
+    GroundBDD --> Draft["Draft Agent-Ready Spec\n(Boundaries, Mutation Matrix, Contracts, Oracle)"]
+    GroundUni --> Draft
+    
+    Draft --> Sim["Agent Execution Feasibility Simulation\n(Self-Audit: Zero-Guesswork Check)"]
+    Sim --> Stage1Done["Stage 1 Gate Delivered\n🛑 Immediate Tool Stop (Await Human Review)"]
+    
+    Stage1Done -.->|"After Approval (Stage 2)"| Downstream["Downstream AI Coding Agent\n(Implements Code & Passes Tests)"]
+```
+
+- **Phase 1 (Zero-Assumption Gatekeeper)**: Evaluates 4-Pillar Clarity Test. Halts and inquires if requirements lack clear scope, dependencies, constraints, or verification oracles.
+- **Phase 2 (Archetype Profiling & Grounding)**: Detects Mode A (BDD) vs Mode B (Universal) and grounds read-only context without code pollution.
+- **Phase 3 (Agent-Ready Spec Synthesis)**: Enforces 6-section specification schema (Overview, Invariants, Protocol, Mutation Matrix, Contracts, Oracle).
+- **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context to eliminate qualitative adjectives and unassertable criteria.
+- **Phase 5 (Delivery & Stage Gate Isolation)**: Writes spec to disk and freezes tool usage immediately for human review.
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
@@ -250,6 +298,9 @@ flowchart TD
 - **Root Governance Pointer Template**: [skills/adopt-blueprint-workflow/templates/AGENTS.md](../../skills/adopt-blueprint-workflow/templates/AGENTS.md)
 - **Workflow Contributor Guide Template**: [skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md](../../skills/adopt-blueprint-workflow/templates/CONTRIBUTING.md)
 - **Pure Skill (Workflow Audit)**: [skills/audit-workflow-fitness/SKILL.md](../../skills/audit-workflow-fitness/SKILL.md)
+- **Pure Skill (Specification Authoring)**: [skills/craft-spec/SKILL.md](../../skills/craft-spec/SKILL.md)
+- **Specification Template Reference**: [skills/craft-spec/references/spec-template.md](../../skills/craft-spec/references/spec-template.md)
+- **Clarity Gatekeeper Checklist**: [skills/craft-spec/references/clarity-gatekeeper-checklist.md](../../skills/craft-spec/references/clarity-gatekeeper-checklist.md)
 - **Pure Skill (Spec Settlement)**: [skills/settle-spec/SKILL.md](../../skills/settle-spec/SKILL.md)
 - **Settle Checklist Reference**: [skills/settle-spec/references/settle-checklist.md](../../skills/settle-spec/references/settle-checklist.md)
 - **Code Map Design Patterns**: [skills/settle-spec/references/code-map-patterns.md](../../skills/settle-spec/references/code-map-patterns.md)

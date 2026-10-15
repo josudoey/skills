@@ -9,6 +9,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 - **[`adopt-blueprint-workflow`](./skills/adopt-blueprint-workflow)**: Initialize or adapt a repository into an enterprise-grade Blueprint-Driven Development (BDD) workflow with self-contained `docs/` and lightweight `AGENTS.md` pointers.
 - **[`audit-stale-ref`](./skills/audit-stale-ref)**: Audit code comments for dead file paths, broken symbol pointers, and reverse documentation coupling with a read-only diagnostic engine.
 - **[`audit-workflow-fitness`](./skills/audit-workflow-fitness)**: Audit and evaluate project development workflows, markdown governance, and spec fitness with a token-guarded diagnostic engine.
+- **[`craft-spec`](./skills/craft-spec)**: Formalize Stage 1 Specification Authoring across BDD and Universal repositories, enforcing the Zero-Assumption Gatekeeper, Code Immunity, and downstream agent-ready contracts.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
 - **[`settle-spec`](./skills/settle-spec)**: Formalize Stage 3 Specification Settlement in Blueprint-Driven Development, enforcing the Three-Question Gatekeeper and maintaining Code Navigation Maps.
@@ -104,6 +105,16 @@ npx skills use josudoey/skills@gen-commit-message
   - **Binary Quality Gate**: Eliminates compensatory composite score fallacies; any `error` immediately blocks the gate, while `warn` flags advisories.
   - **Token-Guarded Inspection Protocol**: Employs metadata-first inspection with byte-to-token ratio estimation and UNIX silence, keeping diagnostic context overhead $< 2,000$ tokens.
   - **Pure-Skill Portability**: Built as a pure cognitive Markdown engine (`SKILL.md`) with zero scripts and zero runtime dependencies.
+
+### `craft-spec`
+
+- **Description**: Formalizes Stage 1 Specification Authoring across Blueprint-Driven Development (BDD) and universal software repositories. Introduces the Zero-Assumption Gatekeeper to prevent premature coding and hallucinatory drift, strictly preserves Code Immunity, and authors machine-executable specifications optimized for downstream AI coding agents.
+- **Key Features**:
+  - **Zero-Assumption Gatekeeper**: Evaluates the 4-Pillar Clarity Test (Scope & Intent, Inputs & Dependencies, Architectural Invariants, Verification Oracle) and immediately halts with targeted inquiries if requirements are underspecified.
+  - **Adaptive Dual-Mode Operation**: Dynamically adapts to BDD mode (`docs/progress/`) or Universal mode (`specs/`, `docs/specs/`, or `.agents/specs/`) without foreign folder pollution.
+  - **Agent-Ready Spec Structure**: Generates 6 mandatory sections (Overview, Invariants, Protocol, Mutation Matrix, Contract Deltas, Verification Oracle) designed for autonomous AI agents.
+  - **Strict Code Immunity & Stage Gate Isolation**: Read-only operations on application code; freezes tools immediately upon specification delivery.
+  - **Pure-Skill Portability**: 100% pure cognitive Markdown workflow (`SKILL.md`) with zero scripts and zero runtime dependencies.
 
 ### `gen-commit-message`
 
