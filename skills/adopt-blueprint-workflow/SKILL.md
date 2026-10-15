@@ -57,9 +57,9 @@ docs/
 ```
 
 For any directory created or lacking an explanatory guide, write the corresponding README:
-- `docs/blueprint/README.md`: Sourced from [templates/docs/blueprint/README.md](file://templates/docs/blueprint/README.md).
-- `docs/progress/README.md`: Sourced from [templates/docs/progress/README.md](file://templates/docs/progress/README.md).
-- `docs/reference/README.md`: Sourced from [templates/docs/reference/README.md](file://templates/docs/reference/README.md).
+- `docs/blueprint/README.md`: Sourced from [templates/docs/blueprint/README.md](./templates/docs/blueprint/README.md).
+- `docs/progress/README.md`: Sourced from [templates/docs/progress/README.md](./templates/docs/progress/README.md).
+- `docs/reference/README.md`: Sourced from [templates/docs/reference/README.md](./templates/docs/reference/README.md).
 
 *(If the directory already contains user files, preserve all existing files and do not overwrite unless instructed).*
 
@@ -68,7 +68,7 @@ For any directory created or lacking an explanatory guide, write the correspondi
 ### Phase 3: Workflow Document Deployment
 
 Deploy or verify the definitive workflow specification at **`CONTRIBUTING.md`**:
-- `CONTRIBUTING.md`: Sourced from [templates/CONTRIBUTING.md](file://templates/CONTRIBUTING.md).
+- `CONTRIBUTING.md`: Sourced from [templates/CONTRIBUTING.md](./templates/CONTRIBUTING.md).
 - If the document already exists, compare content. If updates are needed, prompt the user before modifying.
 
 ---
@@ -78,7 +78,7 @@ Deploy or verify the definitive workflow specification at **`CONTRIBUTING.md`**:
 Configure the root `AGENTS.md` file using the **Two-Tier Pointer Pattern**:
 
 #### Case A: Greenfield (No Existing `AGENTS.md`)
-- Copy [templates/AGENTS.md](file://templates/AGENTS.md) directly to the project root `AGENTS.md`.
+- Copy [templates/AGENTS.md](./templates/AGENTS.md) directly to the project root `AGENTS.md`.
 - Ensure the deployed file contains the pre-configured `<!-- blueprint-workflow:start -->` and `<!-- blueprint-workflow:end -->` boundaries.
 
 #### Case B: Brownfield (Existing `AGENTS.md` Found)

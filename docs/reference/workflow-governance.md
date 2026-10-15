@@ -175,6 +175,10 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Strict Read-Only Git Boundary**: The engine must operate in read-only inspection mode. State-mutating Git operations (`git add`, `git commit`, `git reset`, `git checkout`) are strictly prohibited.
 - **Empty Diff Fast-Exit**: When `git diff --cached` returns empty or whitespace-only output, the engine halts immediately with "no staged changes" without prompting or auto-staging files.
 
+### 3.22 Skill Template Relative Link Invariant (`adopt-blueprint-workflow`)
+- **Strict Relative Path Resolution**: All template references within skill documentation (`skills/**/SKILL.md`) must strictly use repository-relative paths (`./templates/...`).
+- **Zero Invalid URI Schemes**: Pseudo-protocol schemes (such as `file://templates/...`) are strictly prohibited to prevent broken links across markdown previewers, IDE renderers, and autonomous agent tool resolvers.
+
 ---
 
 ## 4. State Machines & Critical Flows
