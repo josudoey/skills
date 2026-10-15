@@ -179,6 +179,12 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Strict Relative Path Resolution**: All template references within skill documentation (`skills/**/SKILL.md`) must strictly use repository-relative paths (`./templates/...`).
 - **Zero Invalid URI Schemes**: Pseudo-protocol schemes (such as `file://templates/...`) are strictly prohibited to prevent broken links across markdown previewers, IDE renderers, and autonomous agent tool resolvers.
 
+### 3.23 Adaptive Workspace Archetype Settlement Invariant (`settle-spec`)
+- **Dual-Mode Parity**: Stage 3 specification settlement adapts dynamically to the repository archetype:
+  - **Mode A (BDD Mode)**: Detected via `docs/progress/` or `docs/blueprint/`. Extracts invariants and state flows into `docs/reference/[domain].md`, deletes retired WIP progress specs, and prunes empty slice directories.
+  - **Mode B (Universal Mode)**: Detected when BDD markers are absent. Discovers active specs across `specs/`, `docs/specs/`, `docs/plans/`, or `.agents/specs/`, synthesizes invariants into discovered architecture references or project `README.md`, and relocates retired specs to `[spec-dir]/archive/` (or deletes upon user confirmation).
+- **Strict Read-Only Source Boundary**: `settle-spec` operates strictly on documentation and specification files, never mutating application source code or automated test suites during settlement.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -236,22 +242,24 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Trigger["Trigger: /settle-spec [path]"] --> Stance["Role & Stance Priming\n(Minimalist Architectural Curator)"]
-    Stance --> P1["Phase 1: Pre-flight & Target Resolution"]
-    P1 --> P2["Phase 2: Three-Question Gatekeeper Evaluation"]
-    P2 --> P3["Phase 3: Living Reference & Code Map Synthesis\n(Zero DTO Copies, Ruthless Pruning)"]
-    P3 --> P4["Phase 4: Interactive Review & User Sign-Off"]
-    P4 --> P5["Phase 5: Atomic Settle, Retirement & Commit Suggestion"]
-
-    P4 -->|"User Requests Edits / Abort"| P3
+    Trigger["Trigger: /settle-spec [path?]"] --> Stance["Role & Stance Priming\n(Minimalist Architectural Curator)"]
+    Stance --> Detect{"Workspace Archetype Detection"}
+    
+    Detect -- "Mode A: BDD (docs/progress/ exists)" --> SettleBDD["BDD Settlement\nExtract to docs/reference/[domain].md\nRetire from docs/progress/[code]/"]
+    
+    Detect -- "Mode B: Universal (Generic Repository)" --> SettleUni["Universal Settlement\nTarget: specs/, docs/specs/, or .agents/specs/\nExtract to README.md / docs/architecture.md\nArchive to specs/archive/ or delete"]
+    
+    SettleBDD --> Review["Phase 4: Interactive Review Card & Sign-Off"]
+    SettleUni --> Review
+    Review --> Execute["Phase 5: Atomic Settle, Retirement & Commit Suggestion"]
 ```
 
 - **Stance Priming**: Primes agent persona as Minimalist Architectural Curator to reject ephemeral duplication and embrace decisive retirement.
-- **Phase 1 (Pre-flight & Target Resolution)**: Resolves target progress spec path or prompts user with an interactive list of active specs. Verifies production files and automated tests exist.
+- **Phase 1 (Pre-flight & Target Resolution)**: Detects workspace archetype (Mode A: BDD vs Mode B: Universal), resolves target spec path or candidate list, and resolves destination reference documents.
 - **Phase 2 (Three-Question Gatekeeper Evaluation)**: Analyzes spec against Q1 (state flows), Q2 (fault tolerance/invariants), and Q3 (self-explanatory logic), eliminating ephemeral DTO tables.
-- **Phase 3 (Living Reference & Code Map Synthesis)**: Synthesizes enduring invariants and diagrams into `docs/reference/[domain].md` and updates the Code Navigation Map with zero redundant DTO payloads.
-- **Phase 4 (Interactive Review & Human Sign-Off)**: Renders a structured review card detailing proposed reference updates and targeted file deletions for explicit user approval.
-- **Phase 5 (Atomic Settle, Retirement & Commit)**: Applies reference mutations, deletes the retired progress specification, prunes empty parent slice directories, and provides Conventional Commit guidance.
+- **Phase 3 (Living Reference & Code Map Synthesis)**: Synthesizes enduring invariants and diagrams into target reference (`docs/reference/[domain].md` in Mode A, or architecture doc/`README.md` in Mode B) with zero redundant DTO payloads.
+- **Phase 4 (Interactive Review & Human Sign-Off)**: Renders a structured review card detailing proposed reference updates and targeted file retirements/archives for explicit user approval.
+- **Phase 5 (Atomic Settle, Retirement & Commit)**: Applies reference mutations, retires the completed progress specification (Mode A: file deletion and directory pruning / Mode B: move to archive or delete), and provides Conventional Commit guidance.
 
 ### 4.4 Non-Destructive AGENTS.md Adoption Engine (`adopt-blueprint-workflow`)
 
