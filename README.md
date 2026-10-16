@@ -98,6 +98,16 @@ npx skills use josudoey/skills@gen-commit-message
   - **Spec Immutability & Settle Gatekeeper**: Enforces append-only feature revision and structured knowledge settlement before ephemeral WIP specs are deleted.
   - **Dual-Mode Greenfield / Brownfield**: Safely adopts existing codebases using bounded marker blocks (`<!-- blueprint-workflow:start -->`), preserving 100% of pre-existing commands and instructions.
 
+### `audit-stale-ref`
+
+- **Description**: Inspects internal references in code comments (file paths, symbol names, line numbers, and documentation links) across target codebases, flags stale or decayed pointers, and produces actionable ESLint-style diagnostic reports with a binary **Quality Gate (`PASSED` vs `BLOCKED`)**.
+- **Key Features**:
+  - **4-Dimensional Rule Engine**: Covers `ref/dead-file-path` (broken file pointers), `ref/dead-symbol` (missing identifier declarations), `ref/reverse-doc-pointer` (prohibited reverse links to ephemeral progress specs), and `ref/stale-line-number` (fragile hardcoded line numbers).
+  - **Pessimistic Verifier Stance**: Treats all comment references as decayed until proven by exact physical existence in the active workspace (`Code as Truth`).
+  - **Token-Guarded Inspection Protocol**: Employs language-aware comment filtering and line-range slicing to keep diagnostic context overhead $< 2,500$ tokens across multi-file modules.
+  - **Multi-Format Diagnostic Reporting**: Supports zero-noise UNIX silence for clean repositories, line-anchored ESLint-style diagnostic reports, and structured machine-readable JSON (`--json`).
+  - **Pure-Skill Portability**: Built as a pure cognitive Markdown engine (`SKILL.md`) with zero scripts and zero runtime dependencies.
+
 ### `audit-workflow-fitness`
 
 - **Description**: Evaluates and inspects project development workflows, markdown governance, and specification fitness using an ESLint-style diagnostic engine with strict Quality Gates (`PASSED` vs `BLOCKED`).
