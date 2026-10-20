@@ -71,12 +71,14 @@ sequenceDiagram
 
 Downstream agents must restrict file operations strictly to the following declared paths:
 
-| Operation | Target Path | Responsibility / Purpose |
-| :--- | :--- | :--- |
-| `CREATE` | `path/to/new-file.ext` | [Purpose and exported symbols] |
-| `MODIFY` | `path/to/existing-file.ext` | [Targeted modification slice] |
-| `DELETE` | `path/to/deprecated-file.ext` | [Removal justification] |
-| `FORBIDDEN` | `path/to/protected/**` | [Explicitly protected areas] |
+- `CREATE`:
+  - `path/to/new-file.ext`: [Purpose and exported symbols]
+- `MODIFY`:
+  - `path/to/existing-file.ext`: [Targeted modification slice]
+- `DELETE`:
+  - `path/to/deprecated-file.ext`: [Removal justification]
+- `FORBIDDEN`:
+  - `path/to/protected/**`: [Explicitly protected areas]
 
 ---
 
@@ -95,9 +97,10 @@ export interface ExamplePayload {
 ```
 
 ### 5.2 Error Codes & Failure Modes
-| Error Code | HTTP / Exit Code | Trigger Condition | Remediation |
-| :--- | :--- | :--- | :--- |
-| `ERR_INVALID_INPUT` | 400 / 1 | Validation schema failure | Check required fields |
+- **`ERR_INVALID_INPUT`**:
+  - *Exit / Status Code*: `400` / `1`
+  - *Trigger Condition*: Validation schema failure
+  - *Remediation*: Check required fields
 
 ---
 
