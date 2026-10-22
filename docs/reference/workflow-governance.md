@@ -41,6 +41,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 10. **Structured Bullet-List vs Pipe Table Representation (`craft-spec`)**:
     - *Trade-off*: Pipe tables in markdown specifications frequently break across LLMs due to multi-line cell formatting, column truncation, or backtick syntax friction.
     - *Current Scope*: Replaced Markdown pipe tables in `spec-template.md` (File Mutation Matrix and Error Codes) with structured hierarchical bullet lists, preserving 100% semantic equivalence while ensuring robust downstream parsing and clean diff ergonomics.
+11. **Path Portability & Workspace Context Isolation Guardrails (`craft-spec`)**:
+    - *Trade-off*: IDE conversational styling mandates `file://` links in chat dialogues, and multi-workspace environments leak out-of-workspace editor tabs.
+    - *Current Scope*: Codified the Path Portability Invariant (strictly repo-relative or backticked, zero `file://` and zero machine-absolute roots) and Workspace Boundary Isolation Invariant. Embedded Phase 4 simulation checks (Check 4: Path Purity Check and Check 5: Workspace Containment Check) to prevent documentation portability leakage and cross-project context pollution.
 
 ---
 
@@ -193,6 +196,15 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Semantic Field Equivalence**: All structural attributes previously captured in table columns (Operation type, Target Path, Purpose/Responsibilities, Error Code, HTTP/Exit Status, Trigger Condition, Remediation) are preserved using structured, bold bullet keys.
 - **Parsing Reliability & Ergonomics**: Eliminates table wrapping bugs, cell backtick issues, and column misalignment for downstream AI coding agents (`build-spec`).
 
+### 3.25 Path Portability & Zero-`file://` Invariant (`craft-spec`)
+- **Zero Machine-Absolute Paths & Zero-`file://`**: All file paths, symbol references, and markdown links within generated specification documents must strictly use repository-relative paths (`./`, `../`, `docs/...`) or plain inline code backticks (`` `filename.ext` ``).
+- **Dialogue vs Document Demarcation**: The `file://` URI scheme and machine-specific absolute workstation paths (`/Users/*`, `/home/*`, `C:\*`) are strictly prohibited in repository documents. `file://` links are exclusively reserved for interactive chat dialogue, never repository files.
+
+### 3.26 Workspace Boundary & Context Isolation Invariant (`craft-spec`)
+- **Strict CWD Anchor**: Specification authoring must anchor strictly within the active target repository workspace (`CWD` / Workspace Root).
+- **Cross-Project Noise Filtering**: Agents must explicitly disregard open editor tabs (`Active Document`, `Other open documents`) and external conversation history from other repositories during grounding.
+- **Boundary Containment & Ambiguity Halt**: All analyzed blueprints, living references, and File Mutation Matrix paths must reside 100% within the current workspace boundary. If a user prompt is ambiguous and the active document belongs to an external project, the agent must trigger a Gatekeeper clarification halt rather than borrowing foreign domain context.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -322,10 +334,10 @@ flowchart TD
     Stage1Done -.->|"After Approval (Stage 2)"| Downstream["Downstream AI Coding Agent\n(Implements Code & Passes Tests)"]
 ```
 
-- **Phase 1 (Zero-Assumption Gatekeeper)**: Evaluates 4-Pillar Clarity Test. Halts and inquires if requirements lack clear scope, dependencies, constraints, or verification oracles.
-- **Phase 2 (Archetype Profiling & Grounding)**: Detects Mode A (BDD) vs Mode B (Universal) and grounds read-only context without code pollution.
+- **Phase 1 (Zero-Assumption Gatekeeper)**: Evaluates 4-Pillar Clarity Test. Halts and inquires if requirements lack clear scope, dependencies, constraints, or verification oracles. Rejects external open tabs if the prompt is ambiguous.
+- **Phase 2 (Archetype Profiling & Grounding)**: Anchors grounding strictly to current workspace root (`CWD`), explicitly disregarding external project editor tabs. Detects Mode A (BDD) vs Mode B (Universal) and grounds read-only context without code pollution.
 - **Phase 3 (Agent-Ready Spec Synthesis)**: Enforces 6-section specification schema (Overview, Invariants, Protocol, Mutation Matrix, Contracts, Oracle).
-- **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context to eliminate qualitative adjectives and unassertable criteria.
+- **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context to eliminate qualitative adjectives and unassertable criteria. Executes Check 4 (Path Purity Check: zero `file://` or machine-absolute roots) and Check 5 (Workspace Containment Check: 100% within target workspace).
 - **Phase 5 (Delivery & Stage Gate Isolation)**: Writes spec to disk and freezes tool usage immediately for human review.
 
 ### 4.6 Stage 2 Implementation & Verification Protocol (`build-spec`)
