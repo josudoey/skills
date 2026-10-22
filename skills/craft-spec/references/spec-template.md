@@ -8,6 +8,7 @@ This template provides the standard 6-section specification schema required by `
 # [Feature / Slice Title] (`[Index]-[type]-[slug]`)
 
 <!-- Ref: [Upstream Blueprint / Requirement Link] -->
+<!-- Invariant: All paths must be repository-relative or enclosed in inline code backticks. NEVER use file:// or workstation-absolute paths (/Users/*, /home/*). -->
 
 ## 1. Overview & Rationale
 

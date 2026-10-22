@@ -60,6 +60,12 @@ Activate this skill when:
 - **Stage Gate Isolation (No Premature Implementation)**: The deliverable of Stage 1 is strictly the specification document. After writing the spec, stop tools immediately and await human review.
 - **Pure-Skill First (Zero-Runtime Dependency)**: Implemented strictly as a cognitive Markdown workflow (`SKILL.md`) without auxiliary script binaries.
 - **English-Only Maintenance**: All specifications, frontmatter, diagrams, and commit suggestions must be authored exclusively in English.
+- **Path Portability & Zero-`file://` Invariant**:
+  All file paths, symbol references, and markdown links inside the generated specification document MUST strictly use repository-relative paths (e.g., `docs/reference/...`, `libs/...`) or plain inline code backticks (e.g., `StartupChecklistItemView.tsx`).
+  The `file://` URI scheme and machine-specific absolute workstation paths (e.g., `/Users/*`, `/home/*`, `C:\*`) are **STRICTLY FORBIDDEN** within any repository documents. `file://` links are exclusively reserved for interactive chat dialogue, never repository files.
+- **Workspace Boundary & Context Isolation Invariant**:
+  The specification MUST be anchored strictly within the active target repository workspace (`CWD` / Workspace Root).
+  The agent MUST ignore any open editor documents or conversation history belonging to external directories or different repositories. All analyzed blueprints, living references, and File Mutation Matrix paths must reside 100% within the current workspace boundary.
 
 ---
 
@@ -92,12 +98,14 @@ sequenceDiagram
 3. If any requirement, boundary, or verification oracle is ambiguous:
    - **HALT IMMEDIATELY**. Do not write any file to disk.
    - Emit the structured clarification block (see below) with 2–4 targeted options or direct questions.
+4. If the prompt is ambiguous and the active document belongs to an external project, halt and trigger clarification rather than guessing or borrowing foreign domain context.
 
 ### Phase 2: Archetype Profiling & Read-Only Grounding
-1. **Detect Mode**:
-   - `docs/progress/` or `docs/blueprint/` present ➔ **Mode A (BDD)**.
+1. **Enforce Workspace Anchor**: Grounding MUST strictly resolve relative to the current workspace root (`CWD`). Explicitly disregard open editor tabs (`Active Document`, `Other open documents`) that reside outside the active repository root.
+2. **Detect Mode**:
+   - `docs/progress/` or `docs/blueprint/` present in current workspace ➔ **Mode A (BDD)**.
    - Otherwise ➔ **Mode B (Universal)**.
-2. **Context Grounding (Read-Only)**:
+3. **Context Grounding (Read-Only)**:
    - *Mode A*: Ground from upstream blueprint (`docs/blueprint/[code]_*.md`) and living references (`docs/reference/`). Resolve next sequential index in `docs/progress/[code]/`.
    - *Mode B*: Ground from repository `README.md`, package manifests (`package.json`, `Cargo.toml`, etc.), and exported types. Resolve spec directory (`specs/`, `docs/specs/`, or `.agents/specs/`).
 
@@ -115,6 +123,8 @@ Execute a cognitive simulation before writing:
 - *Check 1*: Can a fresh AI agent execute Stage 2 without guessing any file path or type signature?
 - *Check 2*: Are all qualitative adjectives replaced with measurable invariants?
 - *Check 3*: Is the Verification Oracle fully automated and executable in terminal?
+- *Check 4 (Path Purity Check)*: Verify that the drafted specification markdown contains **ZERO occurrences** of `file://`, `/Users/`, `/home/`, or OS-specific absolute roots before invoking `write_to_file`. If found, convert them to repository-relative paths or inline backticks immediately.
+- *Check 5 (Workspace Containment Check)*: Verify that all declared paths in the File Mutation Matrix reside 100% within the current target repository workspace.
 
 ### Phase 5: Delivery & Stage Gate Isolation
 1. Write the completed spec to the resolved target path.

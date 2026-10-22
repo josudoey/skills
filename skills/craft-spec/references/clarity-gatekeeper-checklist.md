@@ -36,6 +36,8 @@ flowchart LR
 - [ ] Are domain state machines and fault-tolerance policies respected?
 - [ ] Are unidirectional code navigation rules preserved (no reverse doc links)?
 - [ ] Is the English-Only maintenance directive maintained?
+- [ ] Are path portability rules respected (strictly repository-relative or backticked, zero file:// or local absolute workstation paths)?
+- [ ] Is grounding strictly isolated to the current repository workspace (disregarding out-of-workspace tabs and external conversation history)?
 - **Red Flags**:
   - Proposing modifications to protected core packages or forbidden shared libraries.
   - Introducing heavy runtime dependencies into zero-dependency pure skills.
