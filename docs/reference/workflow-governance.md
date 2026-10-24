@@ -44,6 +44,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 11. **Path Portability & Workspace Context Isolation Guardrails (`craft-spec`)**:
     - *Trade-off*: IDE conversational styling mandates `file://` links in chat dialogues, and multi-workspace environments leak out-of-workspace editor tabs.
     - *Current Scope*: Codified the Path Portability Invariant (strictly repo-relative or backticked, zero `file://` and zero machine-absolute roots) and Workspace Boundary Isolation Invariant. Embedded Phase 4 simulation checks (Check 4: Path Purity Check and Check 5: Workspace Containment Check) to prevent documentation portability leakage and cross-project context pollution.
+12. **Dynamic Governance Grounding & Convention Precedence (`craft-spec`)**:
+    - *Trade-off*: When executed across diverse repositories, generic specification templates risk ignoring project-specific conventions (e.g. metadata headers, taxonomy slices, schema validation rules), while hardcoding convention paths breaks cross-project portability.
+    - *Current Scope*: Codified Dynamic Governance Discovery (`CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, `AGENTS.md`), Dynamic Pointer Chasing (progressively loading linked convention files), and Peer Spec Few-Shot Sampling ($\le 50$ lines of sibling specs). Established the Convention Precedence Hierarchy (Project Governance $\succ$ Peer Spec Patterns $\succ$ Default 6-Section Fallback) and added Check 6 (Governance & Convention Compliance) to Phase 4 feasibility simulation.
 
 ---
 
@@ -205,6 +208,21 @@ Before any active specification in `docs/progress/` is retired, the settlement e
 - **Cross-Project Noise Filtering**: Agents must explicitly disregard open editor tabs (`Active Document`, `Other open documents`) and external conversation history from other repositories during grounding.
 - **Boundary Containment & Ambiguity Halt**: All analyzed blueprints, living references, and File Mutation Matrix paths must reside 100% within the current workspace boundary. If a user prompt is ambiguous and the active document belongs to an external project, the agent must trigger a Gatekeeper clarification halt rather than borrowing foreign domain context.
 
+### 3.27 Zero Hardcoded Paths & Dynamic Governance Discovery Invariant (`craft-spec`)
+- **Zero Hardcoded Convention Paths**: Specification authoring workflows must not mandate fixed directory conventions (such as `docs/convention/*`). All governance discovery resolves dynamically through universal repository entrypoints (`CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, `AGENTS.md`) or peer spec sampling.
+- **Dynamic Pointer Chasing**: When `CONTRIBUTING.md` references external convention documents, the agent follows declared markdown links on-demand (progressive context loading) without reading entire folder trees.
+- **Peer Spec Few-Shot Sampling**: In Phase 2, the agent inspects the top $\le 50$ lines of the latest sibling specification in the target spec directory (`docs/progress/**` or `specs/**`) to mirror real-world metadata headers, taxonomies, and naming conventions.
+
+### 3.28 Convention Precedence Hierarchy Invariant (`craft-spec`)
+- **Precedence Order**:
+  $$\text{Project Governance (CONTRIBUTING.md / Linked Docs)} \succ \text{Peer Spec Patterns} \succ \text{Default 6-Section Fallback}$$
+- **Non-Negotiable Core Invariants**: Regardless of project-specific metadata or section variations, all generated specifications must strictly retain:
+  1. The **File Mutation Matrix** (`CREATE`, `MODIFY`, `DELETE`, `FORBIDDEN`).
+  2. The **Automated Verification Oracle** (deterministic executable CLI command).
+  3. **Stage Gate Isolation** (read-only during Stage 1, immediate tool freeze upon spec creation).
+  4. **Strict Path Portability** (repository-relative paths, zero `file://` or machine-absolute workstation paths).
+- **Check 6 Feasibility Simulation**: Prior to delivering a spec in Stage 1, the agent must verify adherence to the lifecycle, naming taxonomy, and architecture layers declared in project governance and sampled peer specs.
+
 ---
 
 ## 4. State Machines & Critical Flows
@@ -315,29 +333,25 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    UserReq["User Requirement / Intent"] --> Gate{"Zero-Assumption\nGatekeeper"}
+    Trigger["Trigger: /craft-spec [intent]"] --> Gate{"Zero-Assumption\nGatekeeper"}
+    Gate -- "Unclear" --> Halt["🛑 Halt & Targeted Clarification"]
     
-    Gate -- "Unclear / Missing Invariants / No Oracle" --> Clarify["🛑 Halt & Targeted Clarification\n(Single/Multi-choice Inquiries)"]
-    Clarify --> UserReq
+    Gate -- "Clear" --> GovProbe["Phase 2: Dynamic Governance Discovery\n(Inspect CONTRIBUTING.md / AGENTS.md)"]
+    GovProbe --> PointerChase{"Pointers to Conventions\nDeclared in CONTRIBUTING.md?"}
+    PointerChase -- "Yes" --> FollowLinks["Follow Linked Convention Docs\n(Slice Read Relevant Guardrails)"]
+    PointerChase -- "No" --> PeerSample["Peer Spec Few-Shot Sampling\n(Sample Latest Sibling Spec in Target Dir)"]
+    FollowLinks --> PeerSample
     
-    Gate -- "100% Clear & Verified" --> Archetype{"Workspace Archetype\nDetection"}
-    
-    Archetype -- "BDD Mode (docs/progress/)" --> GroundBDD["Grounding via Blueprint & Living Specs\nTarget: docs/progress/[code]/[Index]-feature-[slug].md"]
-    Archetype -- "Universal Mode (Generic Repo)" --> GroundUni["Grounding via Manifests, Types & Readme\nTarget: specs/ or .agents/specs/[slug].md"]
-    
-    GroundBDD --> Draft["Draft Agent-Ready Spec\n(Boundaries, Mutation Matrix, Contracts, Oracle)"]
-    GroundUni --> Draft
-    
-    Draft --> Sim["Agent Execution Feasibility Simulation\n(Self-Audit: Zero-Guesswork Check)"]
-    Sim --> Stage1Done["Stage 1 Gate Delivered\n🛑 Immediate Tool Stop (Await Human Review)"]
-    
-    Stage1Done -.->|"After Approval (Stage 2)"| Downstream["Downstream AI Coding Agent\n(Implements Code & Passes Tests)"]
+    PeerSample --> Precedence["Establish Convention Precedence\nProject Custom > Peer Style > Default 6-Section Fallback"]
+    Precedence --> Synthesize["Phase 3: Synthesize Agent-Ready Spec\n(Inject Project Metadata, Taxonomy & Rules)"]
+    Synthesize --> Audit["Phase 4: Agent Feasibility Simulation\n(Includes Check 6: Governance Compliance)"]
+    Audit --> Freeze["Phase 5: Stage Gate Delivery\n🛑 Stop Tools (Await Human Review)"]
 ```
 
 - **Phase 1 (Zero-Assumption Gatekeeper)**: Evaluates 4-Pillar Clarity Test. Halts and inquires if requirements lack clear scope, dependencies, constraints, or verification oracles. Rejects external open tabs if the prompt is ambiguous.
-- **Phase 2 (Archetype Profiling & Grounding)**: Anchors grounding strictly to current workspace root (`CWD`), explicitly disregarding external project editor tabs. Detects Mode A (BDD) vs Mode B (Universal) and grounds read-only context without code pollution.
-- **Phase 3 (Agent-Ready Spec Synthesis)**: Enforces 6-section specification schema (Overview, Invariants, Protocol, Mutation Matrix, Contracts, Oracle).
-- **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context to eliminate qualitative adjectives and unassertable criteria. Executes Check 4 (Path Purity Check: zero `file://` or machine-absolute roots) and Check 5 (Workspace Containment Check: 100% within target workspace).
+- **Phase 2 (Archetype Profiling & Dynamic Governance Grounding)**: Anchors grounding strictly to current workspace root (`CWD`), explicitly disregarding external project editor tabs. Inspects `CONTRIBUTING.md` / `AGENTS.md` for governance pointers, follows convention links on-demand (pointer chasing), detects Mode A (BDD) vs Mode B (Universal), and samples $\le 50$ lines of the latest sibling spec.
+- **Phase 3 (Agent-Ready Spec Synthesis)**: Applies Convention Precedence (Project Governance $\succ$ Peer Spec Patterns $\succ$ Default 6-Section Schema). Injects project metadata headers if mandated, while preserving all core invariants.
+- **Phase 4 (Downstream Agent Feasibility Simulation)**: Simulates execution by an independent AI agent with clean context. Executes Check 4 (Path Purity Check: zero `file://` or machine-absolute roots), Check 5 (Workspace Containment Check: 100% within target workspace), and Check 6 (Governance & Convention Compliance).
 - **Phase 5 (Delivery & Stage Gate Isolation)**: Writes spec to disk and freezes tool usage immediately for human review.
 
 ### 4.6 Stage 2 Implementation & Verification Protocol (`build-spec`)
