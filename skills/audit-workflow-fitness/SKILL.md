@@ -117,8 +117,14 @@ $$\text{Quality Gate} = \begin{cases} \mathbf{PASSED}, & \text{if } \text{errors
   - Scan `docs/progress/**` for prohibited manual lifecycle status fields (`Status: Draft`, `Status: In Progress`, `Status: Completed`, etc.).
   - Lifecycle status must be strictly inferred from the directory path (Path-as-Status).
 - **`consistency/no-broken-relative-links` (`error`)**:
-  - Scan markdown links inside `docs/` and `AGENTS.md` targeting local workspace files using relative paths (e.g., `[text](./path)` or `[text](../path)`).
+  - Scan markdown links inside `docs/`, `AGENTS.md`, and root `CONTRIBUTING.md` targeting local workspace files using relative paths (e.g., `[text](./path)` or `[text](../path)`).
   - Verify every referenced relative path resolves to an existing file or directory.
+- **`consistency/workflow-engine-present` (`error`)**:
+  - In repositories adopting BDD (presence of `docs/blueprint/` or `docs/progress/`), verify that root `CONTRIBUTING.md` exists.
+  - Prevents headless BDD repositories lacking an authoritative contributor contract.
+- **`consistency/pointer-directive-alignment` (`warn`)**:
+  - When `AGENTS.md` exists, verify it contains a reference or pointer link to `CONTRIBUTING.md` (e.g., `[CONTRIBUTING.md](CONTRIBUTING.md)` or `<!-- blueprint-workflow:start -->`).
+  - Warns on decoupled root agent instructions that omit workflow governance grounding.
 
 #### Rule Set 2: `friction` (Cognitive & Token Friction Rules)
 
@@ -229,3 +235,5 @@ When diagnosing violations, provide direct, copy-pasteable remediation instructi
 6. **Concrete Implementation Leak**: "Extract business logic and domain components to `docs/reference/<domain>.md`. Completely delete implementation block from convention without leaving reverse links."
 7. **Search Collision Symbol**: "Replace concrete production symbol with a semantic Role-based abstraction (e.g. `SecondaryOperationPanel`, `[Role]Executor`)."
 8. **Reference Link Leak**: "Prune domain reference link from convention. Keep conventions pattern-pure and decoupled from domain documents."
+9. **Missing Workflow Engine**: "Deploy canonical workflow specification using `adopt-blueprint-workflow` or create root `CONTRIBUTING.md` to define the 3-stage lifecycle."
+10. **Pointer Directive Alignment**: "Add a pointer link to `CONTRIBUTING.md` in `AGENTS.md` to guide AI agents to canonical project governance, or adopt bounded markers via `adopt-blueprint-workflow`."

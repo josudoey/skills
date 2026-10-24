@@ -9,7 +9,7 @@ This specification formalizes the extension of `audit-workflow-fitness` to inspe
 
 ```mermaid
 flowchart TD
-    Trigger["audit-workflow-fitness Activated"] --> P1["Phase 1: Metadata Topology Profiler\nCatalog CONTRIBUTING.md / .github/CONTRIBUTING.md"]
+    Trigger["audit-workflow-fitness Activated"] --> P1["Phase 1: Metadata Topology Profiler\nCatalog Root CONTRIBUTING.md"]
     P1 --> P2["Phase 2: Targeted Probing & Rule Evaluation"]
     
     subgraph ConsistencyRules["Rule Set 1: consistency/"]
@@ -37,9 +37,9 @@ flowchart TD
 
 ### 1.2 Target Objectives
 - **Link Integrity Coverage**:
-  Expand `consistency/no-broken-relative-links` to scan markdown links within `CONTRIBUTING.md` and `.github/CONTRIBUTING.md`.
+  Expand `consistency/no-broken-relative-links` to scan markdown links within root `CONTRIBUTING.md`.
 - **BDD Workflow Engine Gatekeeper**:
-  Introduce `consistency/workflow-engine-present` (`error`) to enforce that BDD repositories maintain a root `CONTRIBUTING.md` or `.github/CONTRIBUTING.md`.
+  Introduce `consistency/workflow-engine-present` (`error`) to enforce that BDD repositories maintain a root `CONTRIBUTING.md`.
 - **Agent Pointer Alignment Verification**:
   Introduce `consistency/pointer-directive-alignment` (`warn`) to ensure `AGENTS.md` points downstream AI agents to `CONTRIBUTING.md`.
 - **Pure-Skill Invariant**:
@@ -109,9 +109,8 @@ sequenceDiagram
 ```
 
 ### Phase 1: Metadata Topology Profiler Enhancement
-1. When profiling governance artifacts, search for workflow engine location:
+1. When profiling governance artifacts, search for root workflow engine:
    - Root `CONTRIBUTING.md`
-   - `.github/CONTRIBUTING.md`
 2. Record existence flag (`has_contributing`), line count, and byte count for token footprint computation.
 3. Detect project mode:
    - If `docs/blueprint/` or `docs/progress/` is present ➔ `is_bdd_mode = true`.
@@ -122,7 +121,7 @@ sequenceDiagram
    - Diagnostic: "BDD workflow detected (presence of docs/blueprint/ or docs/progress/), but CONTRIBUTING.md is missing from repository root."
    - Remediation: "Deploy canonical workflow specification using adopt-blueprint-workflow or create root CONTRIBUTING.md."
 2. **Rule `consistency/no-broken-relative-links` (`error`)**:
-   - Expanded Scope: In addition to `docs/**` and `AGENTS.md`, parse all relative markdown links (`[text](./path)` or `[text](../path)`) inside `CONTRIBUTING.md` and `.github/CONTRIBUTING.md`.
+   - Expanded Scope: In addition to `docs/**` and `AGENTS.md`, parse all relative markdown links (`[text](./path)` or `[text](../path)`) inside root `CONTRIBUTING.md`.
    - Verification: For each link target, check file/directory existence relative to the document location.
    - Diagnostic: "Broken relative link '[path]' in CONTRIBUTING.md does not resolve to an existing file or directory."
    - Remediation: "Update relative path '[broken/path]' to existing file, or prune obsolete link."
@@ -170,10 +169,10 @@ In `skills/audit-workflow-fitness/SKILL.md`, under `#### Rule Set 1: consistency
   - Scan `docs/progress/**` for prohibited manual lifecycle status fields (`Status: Draft`, `Status: In Progress`, `Status: Completed`, etc.).
   - Lifecycle status must be strictly inferred from the directory path (Path-as-Status).
 - **`consistency/no-broken-relative-links` (`error`)**:
-  - Scan markdown links inside `docs/`, `AGENTS.md`, and `CONTRIBUTING.md` (or `.github/CONTRIBUTING.md`) targeting local workspace files using relative paths (e.g., `[text](./path)` or `[text](../path)`).
+  - Scan markdown links inside `docs/`, `AGENTS.md`, and root `CONTRIBUTING.md` targeting local workspace files using relative paths (e.g., `[text](./path)` or `[text](../path)`).
   - Verify every referenced relative path resolves to an existing file or directory.
 - **`consistency/workflow-engine-present` (`error`)**:
-  - In repositories adopting BDD (presence of `docs/blueprint/` or `docs/progress/`), verify that root `CONTRIBUTING.md` or `.github/CONTRIBUTING.md` exists.
+  - In repositories adopting BDD (presence of `docs/blueprint/` or `docs/progress/`), verify that root `CONTRIBUTING.md` exists.
   - Prevents headless BDD repositories lacking an authoritative contributor contract.
 - **`consistency/pointer-directive-alignment` (`warn`)**:
   - When `AGENTS.md` exists, verify it contains a reference or pointer link to `CONTRIBUTING.md` (e.g., `[CONTRIBUTING.md](CONTRIBUTING.md)` or `<!-- blueprint-workflow:start -->`).
