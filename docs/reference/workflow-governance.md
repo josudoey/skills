@@ -47,6 +47,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 12. **Dynamic Governance Grounding & Convention Precedence (`craft-spec`)**:
     - *Trade-off*: When executed across diverse repositories, generic specification templates risk ignoring project-specific conventions (e.g. metadata headers, taxonomy slices, schema validation rules), while hardcoding convention paths breaks cross-project portability.
     - *Current Scope*: Codified Dynamic Governance Discovery (`CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, `AGENTS.md`), Dynamic Pointer Chasing (progressively loading linked convention files), and Peer Spec Few-Shot Sampling ($\le 50$ lines of sibling specs). Established the Convention Precedence Hierarchy (Project Governance $\succ$ Peer Spec Patterns $\succ$ Default 6-Section Fallback) and added Check 6 (Governance & Convention Compliance) to Phase 4 feasibility simulation.
+13. **Workflow Engine & Pointer Linkage Governance (`audit-workflow-fitness`)**:
+    - *Trade-off*: Previously, `audit-workflow-fitness` only cataloged file sizes in Phase 1 without validating `CONTRIBUTING.md` contents or verifying agent pointer alignment, allowing broken relative links in contributor guides or missing BDD governance to pass undetected.
+    - *Current Scope*: Extended `consistency/no-broken-relative-links` to scan root `CONTRIBUTING.md`. Codified `consistency/workflow-engine-present` (mandating root `CONTRIBUTING.md` in BDD workspaces) and `consistency/pointer-directive-alignment` (verifying `AGENTS.md` pointers).
 
 ---
 
@@ -61,7 +64,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 | Rule ID | Severity | Scope | Invariant Requirement |
 | :--- | :--- | :--- | :--- |
 | `consistency/no-manual-status-header` | 🔴 `error` | `docs/progress/**` | Documents must never contain manual status headers (`Status: Draft`, `Status: In Progress`). Status is strictly derived from directory path (**Path-as-Status**). |
-| `consistency/no-broken-relative-links` | 🔴 `error` | `docs/**`, `AGENTS.md` | All local relative markdown links must resolve to existing files or directories. |
+| `consistency/no-broken-relative-links` | 🔴 `error` | `docs/**`, `AGENTS.md`, `CONTRIBUTING.md` | All local relative markdown links must resolve to existing files or directories. |
+| `consistency/workflow-engine-present` | 🔴 `error` | Workspace root | In BDD repositories (`docs/blueprint/` or `docs/progress/`), verify that root `CONTRIBUTING.md` exists. |
+| `consistency/pointer-directive-alignment` | 🟡 `warn` | `AGENTS.md` | Verify `AGENTS.md` contains an active reference link or bounded pointer targeting `CONTRIBUTING.md`. |
 | `friction/max-token-overhead` | 🟡 `warn` / 🔴 `error` | `docs/convention/**`, `.agents/rules/**` | Flag files $251 - 400$ lines as advisory smell (`warn`). Flag $> 400$ lines as monolithic blockers (`error`) requiring mandatory decomposition. Enforces **Decomposition-First Anti-Loop**. |
 | `friction/no-bloated-schema-tables` | 🟡 `warn` | `docs/convention/**` | Tables in convention files must not contain $> 8$ rows of type/field DTO definitions. |
 | `truth/no-duplicate-api-dictionaries` | 🟡 `warn` | `docs/reference/**` | Living specifications must never duplicate API payload tables or database schema dictionaries (**Code as Truth**). |
