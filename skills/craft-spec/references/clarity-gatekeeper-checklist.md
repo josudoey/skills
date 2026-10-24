@@ -33,6 +33,7 @@ flowchart LR
 
 ### Pillar 3: Architectural Invariants (CONSTRAINTS)
 - [ ] Does the proposed change align with project directory topologies and naming conventions?
+- [ ] Are project-specific governance and workflow directives in `CONTRIBUTING.md` or `AGENTS.md` (and linked convention files) identified and respected?
 - [ ] Are domain state machines and fault-tolerance policies respected?
 - [ ] Are unidirectional code navigation rules preserved (no reverse doc links)?
 - [ ] Is the English-Only maintenance directive maintained?

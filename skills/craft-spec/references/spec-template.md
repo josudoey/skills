@@ -2,6 +2,11 @@
 
 This template provides the standard 6-section specification schema required by `craft-spec`. It is optimized for downstream autonomous AI coding agents to implement during Stage 2 without architectural drift or guesswork.
 
+> [!IMPORTANT]
+> **Convention Precedence Rule**:
+> If the target workspace defines a specification schema, lifecycle, or metadata structure in `CONTRIBUTING.md` (or referenced convention guidelines), that project convention MUST take precedence over this default template.
+> This template serves as the canonical baseline fallback, guaranteeing that the **File Mutation Matrix** and **Verification Oracle** are always present.
+
 ---
 
 ```markdown
@@ -9,6 +14,7 @@ This template provides the standard 6-section specification schema required by `
 
 <!-- Ref: [Upstream Blueprint / Requirement Link] -->
 <!-- Invariant: All paths must be repository-relative or enclosed in inline code backticks. NEVER use file:// or workstation-absolute paths (/Users/*, /home/*). -->
+<!-- Optional: Insert project-specific metadata block or headers here (e.g. ## 1. Metadata with Target Apps, Target Libs, Owner) if required by project conventions -->
 
 ## 1. Overview & Rationale
 

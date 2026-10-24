@@ -11,23 +11,19 @@ This skill introduces the **Zero-Assumption Gatekeeper** to fail-fast against am
 
 ```mermaid
 flowchart TD
-    UserReq["User Requirement / Intent"] --> Gate{"Zero-Assumption\nGatekeeper"}
+    Trigger["Trigger: /craft-spec [intent]"] --> Gate{"Zero-Assumption\nGatekeeper"}
+    Gate -- "Unclear" --> Halt["🛑 Halt & Targeted Clarification"]
     
-    Gate -- "Unclear / Missing Invariants / No Oracle" --> Clarify["🛑 Halt & Targeted Clarification\n(Single/Multi-choice Inquiries)"]
-    Clarify --> UserReq
+    Gate -- "Clear" --> GovProbe["Phase 2: Dynamic Governance Discovery\n(Inspect CONTRIBUTING.md / AGENTS.md)"]
+    GovProbe --> PointerChase{"Pointers to Conventions\nDeclared in CONTRIBUTING.md?"}
+    PointerChase -- "Yes" --> FollowLinks["Follow Linked Convention Docs\n(Slice Read Relevant Guardrails)"]
+    PointerChase -- "No" --> PeerSample["Peer Spec Few-Shot Sampling\n(Sample Latest Sibling Spec in Target Dir)"]
+    FollowLinks --> PeerSample
     
-    Gate -- "100% Clear & Verified" --> Archetype{"Workspace Archetype\nDetection"}
-    
-    Archetype -- "BDD Mode (docs/progress/)" --> GroundBDD["Grounding via Blueprint & Living Specs\nTarget: docs/progress/[code]/[Index]-feature-[slug].md"]
-    Archetype -- "Universal Mode (Generic Repo)" --> GroundUni["Grounding via Manifests, Types & Readme\nTarget: specs/ or .agents/specs/[slug].md"]
-    
-    GroundBDD --> Draft["Draft Agent-Ready Spec\n(Boundaries, Mutation Matrix, Contracts, Oracle)"]
-    GroundUni --> Draft
-    
-    Draft --> Sim["Agent Execution Feasibility Simulation\n(Self-Audit: Zero-Guesswork Check)"]
-    Sim --> Stage1Done["Stage 1 Gate Delivered\n🛑 Immediate Tool Stop (Await Human Review)"]
-    
-    Stage1Done -.->|"After Approval (Stage 2)"| Downstream["Downstream AI Coding Agent\n(Implements Code & Passes Tests)"]
+    PeerSample --> Precedence["Establish Convention Precedence\nProject Custom > Peer Style > Default 6-Section Fallback"]
+    Precedence --> Synthesize["Phase 3: Synthesize Agent-Ready Spec\n(Inject Project Metadata, Taxonomy & Rules)"]
+    Synthesize --> Audit["Phase 4: Agent Feasibility Simulation\n(Includes Check 6: Governance Compliance)"]
+    Audit --> Freeze["Phase 5: Stage Gate Delivery\n🛑 Stop Tools (Await Human Review)"]
 ```
 
 ---
@@ -57,6 +53,11 @@ Activate this skill when:
 - **Adaptive Dual-Mode Operation**:
   - **Mode A (BDD Mode)**: Detected via `docs/progress/` or `docs/blueprint/`. Spec target: `docs/progress/[blueprint-code]/[Index]-feature-[slug].md`.
   - **Mode B (Universal Mode)**: Detected when BDD markers are absent. Target: discovered spec directory (`specs/`, `docs/specs/`, `docs/plans/`) or fallback to `.agents/specs/[feature-slug].md`.
+- **Zero Hardcoded Paths Invariant**:
+  The skill must not mandate or assume fixed convention directory paths (such as `docs/convention/*`). All convention discovery must dynamically resolve through `CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, `AGENTS.md`, or peer spec sampling.
+- **Convention Precedence Hierarchy**:
+  $$\text{Project Governance (CONTRIBUTING.md / Linked Docs)} \succ \text{Peer Spec Patterns} \succ \text{Default 6-Section Fallback}$$
+  Project-specific metadata, taxonomy, and schemas take precedence while strictly preserving non-negotiable core invariants (File Mutation Matrix, Verification Oracle, Stage Gate Isolation, and Path Portability).
 - **Stage Gate Isolation (No Premature Implementation)**: The deliverable of Stage 1 is strictly the specification document. After writing the spec, stop tools immediately and await human review.
 - **Pure-Skill First (Zero-Runtime Dependency)**: Implemented strictly as a cognitive Markdown workflow (`SKILL.md`) without auxiliary script binaries.
 - **English-Only Maintenance**: All specifications, frontmatter, diagrams, and commit suggestions must be authored exclusively in English.
@@ -74,22 +75,25 @@ Activate this skill when:
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as Engineer / User
+    actor Engineer as Engineer / User
     participant Craft as craft-spec Skill
     participant Repo as Target Workspace
 
-    User->>Craft: Trigger /craft-spec [intent / requirement]
-    Craft->>Craft: Phase 1: 4-Pillar Clarity Gatekeeper Test
-    alt Ambiguity Detected
-        Craft-->>User: 🛑 Halt: Targeted Clarification (Options / Inquiries)
-        User-->>Craft: Provide Clarification
+    Engineer->>Craft: Trigger /craft-spec [intent]
+    Craft->>Craft: Phase 1: 4-Pillar Clarity Test
+    alt Ambiguity Found
+        Craft-->>Engineer: 🛑 Halt & Request Clarification
     end
-    Craft->>Repo: Phase 2: Archetype Profiling & Read-Only Grounding
-    Repo-->>Craft: Return workspace mode, manifests, types & living specs
-    Craft->>Craft: Phase 3: Synthesize Agent-Ready Spec
-    Craft->>Craft: Phase 4: Downstream Agent Feasibility Simulation
-    Craft->>Repo: Phase 5: Write Spec to Resolved Target Directory
-    Craft-->>User: Present Spec Link & Freeze Tools (Await Review)
+    Craft->>Repo: Phase 2.1: Locate CONTRIBUTING.md / AGENTS.md
+    Repo-->>Craft: Return Governance Pointers
+    Craft->>Repo: Phase 2.2: Follow Declared Convention Links (Pointer Chasing)
+    Repo-->>Craft: Return Targeted Convention Guidelines
+    Craft->>Repo: Phase 2.3: Sample Latest Peer Spec (Top 50 Lines)
+    Repo-->>Craft: Return Peer Spec Template & Metadata Structure
+    Craft->>Craft: Phase 3: Synthesize Spec (Project Conventions > Default Fallback)
+    Craft->>Craft: Phase 4: Feasibility Simulation (Including Check 6: Governance Compliance)
+    Craft->>Repo: Phase 5: Write Spec to Target Directory
+    Craft-->>Engineer: Present Spec Summary & Freeze Tools (Await Review)
 ```
 
 ### Phase 1: Zero-Assumption Gatekeeper Evaluation
@@ -100,23 +104,30 @@ sequenceDiagram
    - Emit the structured clarification block (see below) with 2–4 targeted options or direct questions.
 4. If the prompt is ambiguous and the active document belongs to an external project, halt and trigger clarification rather than guessing or borrowing foreign domain context.
 
-### Phase 2: Archetype Profiling & Read-Only Grounding
+### Phase 2: Archetype Profiling & Dynamic Governance Grounding
 1. **Enforce Workspace Anchor**: Grounding MUST strictly resolve relative to the current workspace root (`CWD`). Explicitly disregard open editor tabs (`Active Document`, `Other open documents`) that reside outside the active repository root.
-2. **Detect Mode**:
+2. **Dynamic Governance Discovery**:
+   - Inspect `CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, or `AGENTS.md` for project-specific workflow rules, spec lifecycles, and architecture boundaries.
+   - Follow declared markdown links to specific convention documents on-demand (Pointer Chasing).
+3. **Detect Mode**:
    - `docs/progress/` or `docs/blueprint/` present in current workspace ➔ **Mode A (BDD)**.
    - Otherwise ➔ **Mode B (Universal)**.
-3. **Context Grounding (Read-Only)**:
-   - *Mode A*: Ground from upstream blueprint (`docs/blueprint/[code]_*.md`) and living references (`docs/reference/`). Resolve next sequential index in `docs/progress/[code]/`.
-   - *Mode B*: Ground from repository `README.md`, package manifests (`package.json`, `Cargo.toml`, etc.), and exported types. Resolve spec directory (`specs/`, `docs/specs/`, or `.agents/specs/`).
+4. **Context Grounding & Peer Spec Sampling (Read-Only)**:
+   - *Mode A*: Ground from upstream blueprint (`docs/blueprint/[code]_*.md`) and living references (`docs/reference/`). Sample the top 50 lines of the latest sibling spec in `docs/progress/[code]/` to extract established metadata blocks, naming conventions, and type library choices.
+   - *Mode B*: Ground from repository `README.md`, package manifests (`package.json`, `Cargo.toml`, etc.), and exported types. Resolve spec directory (`specs/`, `docs/specs/`, or `.agents/specs/`) and sample latest sibling spec.
 
 ### Phase 3: Agent-Ready Spec Synthesis
-Draft the specification using the mandatory 6-section schema (see [spec-template.md](./references/spec-template.md)):
-1. `## 1. Overview & Rationale` (Mermaid flowchart + problem statement)
-2. `## 2. System Invariants & Guardrails` (Explicit boundaries & Out-of-Scope list)
-3. `## 3. Cognitive / Execution Workflow Protocol` (Deterministic steps)
-4. `## 4. File Mutation Matrix` (`CREATE`, `MODIFY`, `DELETE`, `FORBIDDEN`)
-5. `## 5. Interface Contract & Schema Deltas` (Code as Truth)
-6. `## 6. Verification Oracle & Quality Gate` (Deterministic CLI commands)
+1. Apply the **Convention Precedence Rule**:
+   $$\text{Project Governance (CONTRIBUTING.md / Linked Docs)} \succ \text{Peer Spec Patterns} \succ \text{Default 6-Section Fallback}$$
+2. Inject project-specific metadata (e.g., `## 1. Metadata` with `Target Apps`, `Target Libs`, `Owner`, `Blueprint Code`) if mandated by project conventions.
+3. When using the default schema, draft the specification using the mandatory 6-section schema (see [spec-template.md](./references/spec-template.md)):
+   1. `## 1. Overview & Rationale` (Mermaid flowchart + problem statement)
+   2. `## 2. System Invariants & Guardrails` (Explicit boundaries & Out-of-Scope list)
+   3. `## 3. Cognitive / Execution Workflow Protocol` (Deterministic steps)
+   4. `## 4. File Mutation Matrix` (`CREATE`, `MODIFY`, `DELETE`, `FORBIDDEN`)
+   5. `## 5. Interface Contract & Schema Deltas` (Code as Truth)
+   6. `## 6. Verification Oracle & Quality Gate` (Deterministic CLI commands)
+4. Ensure Core Invariants (Mutation Matrix, Oracle, Boundaries, Path Portability) remain fully intact.
 
 ### Phase 4: Downstream Agent Feasibility Simulation
 Execute a cognitive simulation before writing:
@@ -125,6 +136,7 @@ Execute a cognitive simulation before writing:
 - *Check 3*: Is the Verification Oracle fully automated and executable in terminal?
 - *Check 4 (Path Purity Check)*: Verify that the drafted specification markdown contains **ZERO occurrences** of `file://`, `/Users/`, `/home/`, or OS-specific absolute roots before invoking `write_to_file`. If found, convert them to repository-relative paths or inline backticks immediately.
 - *Check 5 (Workspace Containment Check)*: Verify that all declared paths in the File Mutation Matrix reside 100% within the current target repository workspace.
+- *Check 6 (Governance & Convention Compliance)*: Verify that the drafted spec adheres to the lifecycle, naming taxonomy, and architecture layers declared in the project's `CONTRIBUTING.md` and sampled peer specs.
 
 ### Phase 5: Delivery & Stage Gate Isolation
 1. Write the completed spec to the resolved target path.
