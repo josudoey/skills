@@ -12,6 +12,7 @@ These skills support major AI coding assistants and agents including **Antigravi
 - **[`build-spec`](./skills/build-spec)**: Execute Stage 2 Implementation in Blueprint-Driven Development, enforcing strict File Mutation Matrix boundaries, sequential execution, and automated Verification Oracles.
 - **[`craft-spec`](./skills/craft-spec)**: Formalize Stage 1 Specification Authoring across BDD and Universal repositories, enforcing the Zero-Assumption Gatekeeper, Code Immunity, and downstream agent-ready contracts.
 - **[`gen-commit-message`](./skills/gen-commit-message)**: Generate Angular-style Git commit messages in English based on staged changes.
+- **[`mine-glossary`](./skills/mine-glossary)**: Systematically inspect domain entities, DTO schemas, state enums, and blueprints across polyglot repositories to synthesize an agent-ready Ubiquitous Language Glossary (`docs/reference/glossary.md`).
 - **[`progressive-context-loader`](./skills/progressive-context-loader)**: Load codebase context progressively using a 5-level pyramid (WHY -> WHAT -> HOW -> CONVENTION -> IMPLEMENT) to prevent context blow-up and enforce engineering guardrails.
 - **[`settle-spec`](./skills/settle-spec)**: Formalize Stage 3 Specification Settlement in Blueprint-Driven Development, enforcing the Three-Question Gatekeeper and maintaining Code Navigation Maps.
 
@@ -144,6 +145,16 @@ npx skills use josudoey/skills@gen-commit-message
   - Format: `<type>(<scope>): <subject>`
   - English only, imperative mood, lowercase, no ending period, ≤ 100 characters.
   - Read-only analysis: only inspects staged changes without mutating git state or committing.
+
+### `mine-glossary`
+
+- **Description**: Systematically inspects domain entities, DTO schemas, state enums, and blueprints across polyglot repositories to synthesize or enrich an agent-ready, token-disciplined Ubiquitous Language Glossary (`docs/reference/glossary.md`).
+- **Key Features**:
+  - **Dual-Mode Architectural Adaptability**: Operates seamlessly in BDD repositories (`docs/reference/glossary.md`) or Universal codebases (`.agents/glossary.md` / `docs/glossary.md`).
+  - **Code as Truth & Zero-Hallucination Anchoring**: Mandates that every cataloged term anchors directly to a verified production code symbol (`Code Anchor`), eliminating fictitious models.
+  - **Multilingual Intent Decoupling**: Maps colloquial stakeholder terminology (such as Traditional Chinese / `zh-TW`) to canonical English terms while cataloging prohibited aliases to prevent drift.
+  - **Incremental Preservation Rule**: Performs additive merges when updating existing glossaries, preserving human-authored context and disambiguation notes.
+  - **Pure-Skill Portability**: 100% pure cognitive Markdown workflow (`SKILL.md`) with zero scripts and zero runtime dependencies.
 
 ### `progressive-context-loader`
 

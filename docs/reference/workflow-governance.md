@@ -50,6 +50,9 @@ It establishes an **"ESLint for Development Workflow & Markdown Governance"**, r
 13. **Workflow Engine & Pointer Linkage Governance (`audit-workflow-fitness`)**:
     - *Trade-off*: Previously, `audit-workflow-fitness` only cataloged file sizes in Phase 1 without validating `CONTRIBUTING.md` contents or verifying agent pointer alignment, allowing broken relative links in contributor guides or missing BDD governance to pass undetected.
     - *Current Scope*: Extended `consistency/no-broken-relative-links` to scan root `CONTRIBUTING.md`. Codified `consistency/workflow-engine-present` (mandating root `CONTRIBUTING.md` in BDD workspaces) and `consistency/pointer-directive-alignment` (verifying `AGENTS.md` pointers).
+14. **Ubiquitous Language Mining & Multilingual Grounding (`mine-glossary`)**:
+    - *Trade-off*: In polyglot or multi-package repositories, domain terminology drift, colloquial stakeholder terms (e.g. Traditional Chinese `zh-TW` vs code symbols), and lack of domain glossaries cause agent hallucination and search token explosion.
+    - *Current Scope*: Codified `mine-glossary` as a Pure Skill with dual-mode adaptability (`docs/reference/glossary.md` in Mode A vs `.agents/glossary.md` in Mode B). Mandates 100% Code Anchor grounding to verified symbols, additive merge preservation, hierarchical bullet lists, and a strict $\le 250$ line limit.
 
 ---
 
@@ -392,6 +395,24 @@ flowchart TD
     Format --> Present["Present Commit Message in Code Block\n(Zero Mutation / Pure Read-Only)"]
 ```
 
+### 4.8 Ubiquitous Language Mining Protocol (`mine-glossary`)
+
+```mermaid
+flowchart TD
+    Trigger["Trigger: /mine-glossary [optional-domain-scope]"] --> P1["Phase 1: Workspace Profiling & Mode Detection\n(Mode A: BDD ➔ docs/reference/glossary.md\nMode B: Universal ➔ docs/glossary.md or .agents/glossary.md)"]
+    P1 --> P2["Phase 2: Targeted Schema & Entity Discovery\n(Scan *.types.ts, schema.prisma, *.graphql, types.go, models.py)"]
+    P2 --> P3["Phase 3: Semantic Synthesis & Disambiguation\n(Map Canonical English, zh-TW Aliases, Code Anchors, Invariants)"]
+    P3 --> P4["Phase 4: Zero-Hallucination & Token-Cap Gate\n(Verify Code Grounding, Cap Document <= 250 Lines)"]
+    P4 --> P5["Phase 5: Atomic Write or Additive Merge\n(docs/reference/glossary.md)"]
+    P5 --> Card["Output: Ubiquitous Language Summary Card"]
+```
+
+- **Phase 1 (Workspace Profiling & Mode Resolution)**: Detects Mode A (BDD: `docs/reference/glossary.md`) vs Mode B (Universal: `.agents/glossary.md` / `docs/glossary.md`), resolves optional domain scope arguments, and inspects existing glossaries.
+- **Phase 2 (Targeted Schema & Entity Discovery)**: Executes targeted zero-context grep pattern searches across domain directories (`*.types.ts`, `schema.prisma`, `*.graphql`, `types.go`, `models.py`) to discover exported types, interfaces, models, and lifecycle enums.
+- **Phase 3 (Semantic Synthesis & Disambiguation)**: Synthesizes structured entries with Canonical English Term, Bounded Context, Code Anchor, Localized Synonyms (`zh-TW`), Forbidden Aliases, and Domain Invariants. Pairs and disambiguates easily conflated concepts (e.g., `Void` vs `Refund`, `Modifier` vs `Add-on`).
+- **Phase 4 (Zero-Hallucination & Token-Cap Gate)**: Asserts that 100% of declared Code Anchors exist in active codebase. Verifies total line count $\le 250$ lines ($\approx 2,500$ tokens); triggers domain slicing if exceeded.
+- **Phase 5 (Atomic Write or Additive Merge)**: Writes greenfield glossary or performs additive merge, preserving all human notes and non-conflicting terms, before presenting the Ubiquitous Language Summary Card.
+
 ---
 
 ## 5. Code Navigation Map (Code Map)
@@ -408,6 +429,9 @@ flowchart TD
 - **Clarity Gatekeeper Checklist**: [skills/craft-spec/references/clarity-gatekeeper-checklist.md](../../skills/craft-spec/references/clarity-gatekeeper-checklist.md)
 - **Pure Skill (Commit Message Generation)**: [skills/gen-commit-message/SKILL.md](../../skills/gen-commit-message/SKILL.md)
 - **Staged Diff Script (CLI Fast-Path)**: [skills/gen-commit-message/scripts/get-staged-diff.sh](../../skills/gen-commit-message/scripts/get-staged-diff.sh)
+- **Pure Skill (Ubiquitous Language Mining)**: [skills/mine-glossary/SKILL.md](../../skills/mine-glossary/SKILL.md)
+- **Glossary Agentic Template**: [skills/mine-glossary/references/glossary-template.md](../../skills/mine-glossary/references/glossary-template.md)
+- **Glossary Concrete Example**: [skills/mine-glossary/examples/glossary-example.md](../../skills/mine-glossary/examples/glossary-example.md)
 - **Pure Skill (Spec Settlement)**: [skills/settle-spec/SKILL.md](../../skills/settle-spec/SKILL.md)
 - **Settle Checklist Reference**: [skills/settle-spec/references/settle-checklist.md](../../skills/settle-spec/references/settle-checklist.md)
 - **Code Map Design Patterns**: [skills/settle-spec/references/code-map-patterns.md](../../skills/settle-spec/references/code-map-patterns.md)

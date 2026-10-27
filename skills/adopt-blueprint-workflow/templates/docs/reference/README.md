@@ -11,6 +11,7 @@ This directory serves as the enduring repository for **Living Specifications (Ar
 
 ### 2. Flat Directory Structure by Default
 - Maintain a single flat level (`docs/reference/[domain].md`, e.g., `order.md`, `auth.md`, `billing.md`) to minimize retrieval latency and keep search paths short.
+- **Ubiquitous Language Glossary (`docs/reference/glossary.md`)**: Maintained as a core living reference cataloging canonical domain terminology, code anchors, and invariants mined via `mine-glossary`.
 
 ## Standard Living Spec Structure
 
